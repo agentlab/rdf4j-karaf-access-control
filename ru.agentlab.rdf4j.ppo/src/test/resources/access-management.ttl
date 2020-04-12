@@ -3,12 +3,103 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#> .
 @prefix ppo: <http://vocab.deri.ie/ppo#> .
 
+@prefix ppo: <http://vocab.deri.ie/ppo#> .
+@prefix pporoles: <https://agentlab.ru/onto/ppo-roles#> .
 @prefix users: <http://cpgu.kbpm.ru/ns/rm/users#> .
-@prefix cpgu: <http://cpgu.kbpm.ru/ns/core#> .
-
+@prefix cpgu: <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
 @prefix policies: <http://cpgu.kbpm.ru/ns/rm/policies#> .
 
-policies:fullAccessSuperuser a ppo:PrivacyPreference ;
+
+cpgu:showVeventLinksAlice a ppo:PrivacyPreference ;
+  ppo:hasCondition [
+    ppo:classAsSubject cpgu:Группировка ;
+  ] ;
+  ppo:hasAccessSpace [
+    ppo:hasAccessAgent users:doshkalo ;
+  ] ;
+  ppo:hasAccess acl:Read .
+
+# Pure WebAC variant
+# Alexey Ivanov can read and edit all the classifiers and groupings
+#cpgu:amivanoffRights
+#    a acl:Authorization ;
+#    acl:agent users:amivanoff ;
+#    acl:accessToClass 
+#        cpgu:Classifier ,
+#        cpgu:Группировка ;
+#    acl:mode acl:Control .
+
+
+# Dmitrii Oshkalo can read all the classifiers and edit come groupings
+#cpgu:doshkaloRights1
+#    a acl:Authorization ;
+#    acl:agent users:doshkalo ;
+#    acl:accessToClass cpgu:Classifier ;
+#    acl:mode acl:Read .
+
+#cpgu:doshkaloRights2
+#    a acl:Authorization ;
+#    acl:agent users:doshkalo ;
+#    acl:accessTo
+#		<cpgu:///_tHAikozUEeOiy8owVBW5pQ> ,
+#		<cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+#    acl:mode acl:Write .
+
+# Роль Администратор с политикой полного доступа к данным, которая назначена
+# двум агентам с определенными логинами
+policies:adminRole
+  a pporoles:PolicyRoleShape ;
+  dcterms:title           "Администратор" ;
+  dcterms:description     "Роль администратора системы"^^xsd:string ;
+  dcterms:created         "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:creator         users:amivanoff ;
+  dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:modifiedBy      users:amivanoff ;
+  pporoles:roleAgent      users:amivanoff ;
+  pporoles:roleAgent      users:adminUsers ;
+  pporoles:rolePolicy     policies:fullAccessSuperuser .
+
+# Роль ПереводчикКлассификатора с политиками изменения классификатора
+# и чтения любых данных, которая назначена двум агентам с логинами
+policies:classifierTranslatorRole
+  a pporoles:PolicyRoleShape ;
+  dcterms:title           "Переводчик классификатора" ;
+  dcterms:description     "Переводчики классификатора"^^xsd:string ;
+  dcterms:created         "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:creator         users:amivanoff ;
+  dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:modifiedBy      users:amivanoff ;
+  pporoles:roleAgent      users:dimonia ;
+  pporoles:rolePolicy     policies:editClassifierPref ;
+  pporoles:rolePolicy     policies:readAllPref .
+
+# Роль Эксперт1, на которую назначены политики изменения классификатора
+# и чтения любых данных. Роль присвоена группе expertGroup1
+policies:expertRole1
+  a pporoles:PolicyRoleShape ;
+  dcterms:title           "Эксперт 1" ;
+  dcterms:description     "Эксперт 1"^^xsd:string ;
+  dcterms:created         "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:creator         users:amivanoff ;
+  dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  pporoles:roleAgent      users:expertGroup1 ;
+  pporoles:rolePolicy     policies:editClassifierPref ;
+  pporoles:rolePolicy     policies:readAllPref .
+
+policies:expertRole2
+  a pporoles:PolicyRoleShape ;
+  dcterms:title           "Эксперт 2" ;
+  dcterms:description     "Эксперт 2"^^xsd:string ;
+  dcterms:created         "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  dcterms:creator         users:amivanoff ;
+  dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
+  pporoles:roleAgent      users:expertUsers2 ;
+  pporoles:rolePolicy     policies:editClassifierPref ;
+  pporoles:rolePolicy     policies:readAllPref .
+
+# Агенту с логином superuser разрешены все действия с данными репозитория
+# (минуя механизм ролей)
+policies:fullAccessPref a ppo:PrivacyPreference ;
 	ppo:hasAccessSpace [
 		ppo:hasAccessAgent users:superuser
 	] ;
@@ -17,6 +108,7 @@ policies:fullAccessSuperuser a ppo:PrivacyPreference ;
 	ppo:hasAccess ppo:Update ;
 	ppo:hasAccess acl:Read .
 
+# Агенту с логином anonymous запрещены все действия с данными репозитория
 policies:hideAddDataFromAnon a ppo:PrivacyPreference ;
 	ppo:hasAccessSpace [
 		ppo:hasAccessAgent users:anonymous ;
@@ -26,12 +118,41 @@ policies:hideAddDataFromAnon a ppo:PrivacyPreference ;
 	ppo:hasNoAccess ppo:Update ;
 	ppo:hasNoAccess acl:Read .
 
-policies:showVeventLinksAlice a ppo:PrivacyPreference ;
+# Агенту с ролью classifierTranslatorRole разрешено изменение и добавление триплов,
+# в которых субъект -- это объект классов Группировка или Classifier
+policies:editClassifierPref a ppo:PrivacyPreference ;
   ppo:hasCondition [
     ppo:classAsSubject cpgu:Группировка ;
+    ppo:classAsSubject cpgu:Classifier ;
   ] ;
   ppo:hasAccessSpace [
-    ppo:hasAccessAgent users:doshkalo ;
+    ppo:hasAccessQuery "ASK { policies:classifierTranslatorRole pporoles:roleAgent ?cur_user }"
+  ] ;
+  ppo:hasAccess acl:Write .
+
+# Агенту с ролью translatorRole разрешено изменение и добавление триплов,
+# в которых субъект -- это объект классов из перечня
+policies:readAllPref a ppo:PrivacyPreference ;
+  ppo:hasCondition [
+    ppo:classAsSubject cpgu:Portal ;
+    ppo:classAsSubject cpgu:File ;
+    ppo:classAsSubject cpgu:Orgunit ;
+    ppo:classAsSubject cpgu:Person ;
+    ppo:classAsSubject cpgu:Classifier ;
+    ppo:classAsSubject cpgu:ClassifierElement ;
+    ppo:classAsSubject cpgu:Группировка ;
+    ppo:classAsSubject cpgu:Form ;
+    ppo:classAsSubject cpgu:FormField ;
+    ppo:classAsSubject cpgu:WebService ;
+    ppo:classAsSubject cpgu:WebServiceOperation ;
+    ppo:classAsSubject cpgu:WebServiceInputParameter ;
+    ppo:classAsSubject cpgu:WebServiceOutputParameter ;
+    ppo:classAsSubject cpgu:Document ;
+    ppo:classAsSubject cpgu:Law ;
+    ppo:classAsSubject cpgu:LawPurpose ;
+  ] ;
+  ppo:hasAccessSpace [
+    ppo:hasAccessQuery "ASK { policies:translatorRole pporoles:roleAgent ?cur_user }"
   ] ;
   ppo:hasAccess acl:Read .
 
