@@ -1,0 +1,62 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix acl: <http://www.w3.org/ns/auth/acl#> .
+@prefix ppo: <http://vocab.deri.ie/ppo#> .
+
+@prefix users: <http://cpgu.kbpm.ru/ns/rm/users#> .
+@prefix cpgu: <http://cpgu.kbpm.ru/ns/core#> .
+
+@prefix policies: <http://cpgu.kbpm.ru/ns/rm/policies#> .
+
+policies:fullAccessSuperuser a ppo:PrivacyPreference ;
+	ppo:hasAccessSpace [
+		ppo:hasAccessAgent users:superuser
+	] ;
+	ppo:hasAccess ppo:Delete ;
+	ppo:hasAccess ppo:Create ;
+	ppo:hasAccess ppo:Update ;
+	ppo:hasAccess acl:Read .
+
+policies:hideAddDataFromAnon a ppo:PrivacyPreference ;
+	ppo:hasAccessSpace [
+		ppo:hasAccessAgent users:anonymous ;
+	] ;
+	ppo:hasNoAccess ppo:Delete ;
+	ppo:hasNoAccess ppo:Create ;
+	ppo:hasNoAccess ppo:Update ;
+	ppo:hasNoAccess acl:Read .
+
+policies:showVeventLinksAlice a ppo:PrivacyPreference ;
+  ppo:hasCondition [
+    ppo:classAsSubject cpgu:Группировка ;
+  ] ;
+  ppo:hasAccessSpace [
+    ppo:hasAccessAgent users:doshkalo ;
+  ] ;
+  ppo:hasAccess acl:Read .
+
+# Pure WebAC variant
+# Alexey Ivanov can read and edit all the classifiers and groupings
+#cpgu:amivanoffRights
+#    a acl:Authorization ;
+#    acl:agent users:amivanoff ;
+#    acl:accessToClass 
+#        cpgu:Classifier ,
+#        cpgu:Группировка ;
+#    acl:mode acl:Control .
+
+
+# Dmitrii Oshkalo can read all the classifiers and edit come groupings
+#cpgu:doshkaloRights1
+#    a acl:Authorization ;
+#    acl:agent users:doshkalo ;
+#    acl:accessToClass cpgu:Classifier ;
+#    acl:mode acl:Read .
+
+#cpgu:doshkaloRights2
+#    a acl:Authorization ;
+#    acl:agent users:doshkalo ;
+#    acl:accessTo
+#		<cpgu:///_tHAikozUEeOiy8owVBW5pQ> ,
+#		<cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+#    acl:mode acl:Write .

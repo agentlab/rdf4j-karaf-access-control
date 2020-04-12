@@ -1,0 +1,375 @@
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc:          <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms:     <http://purl.org/dc/terms/> .
+
+@prefix oslc_asset:  <http://open-services.net/ns/asset#> .
+
+@prefix rm:          <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+@prefix rmUserTypes: <http://cpgu.kbpm.ru/ns/rm/user-types#> .
+@prefix cpgu:        <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
+
+@prefix projects:    <http://cpgu.kbpm.ru/ns/rm/projects#> .
+@prefix users:       <http://cpgu.kbpm.ru/ns/rm/users#> .
+@prefix folders:     <http://cpgu.kbpm.ru/ns/rm/folders#> .
+@prefix reqs:        <http://cpgu.kbpm.ru/ns/rm/reqs#> .
+
+# in context http://cpgu.kbpm.ru/ns/rm/reqs#
+
+# root
+<file:///urn-s2-iisvvt-infosystems-classifier-45950.xml>
+  a                         cpgu:Classifier ;
+  dcterms:identifier        "30000"^^xsd:integer ;
+  dcterms:title             "ТН ВЭД ТС" ;
+  dcterms:description       "ТН ВЭД ТС" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module ;
+  dcterms:abstract          "Товарная номенклатура внешнеэкономической деятельности таможенного союза" ;
+  dcterms:alternative       "ТН ВЭД ТС" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  oslc_asset:guid           "E159CD38-5205-DA02-CDAE-560D10043BD5" ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <file:///urn-s2-iisvvt-infosystems-classifier-45950> ;
+  oslc_asset:version        "1.0" ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+# parent : <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml>
+<cpgu:///_tHAikozUEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30001"^^xsd:integer ;
+  dcterms:title             "ТН ВЭД ТС" ;
+  dcterms:description       "ТН ВЭД ТС" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <file:///meta_aVECQo2fEeOiy8owVBW5pQ.xml> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_tHAikozUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M1HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_tHAikozUEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         1 ;
+  rmUserTypes:bookOrder     1 ;
+  rmUserTypes:sectionNumber "0-1" .
+
+# parent : <cpgu:///_tHAikozUEeOiy8owVBW5pQ>
+<cpgu:///_zYXy8ozUEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30002"^^xsd:integer ;
+  dcterms:title             "Наименование раздела" ;
+  dcterms:description       "Наименование раздела" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_alBJ0o2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M2HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_tHAikozUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         2 ;
+  rmUserTypes:bookOrder     2 ;
+  rmUserTypes:sectionNumber "0-1.0-1" .
+
+# parent : <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ>
+<cpgu:///_3AP4kYzUEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30003"^^xsd:integer ;
+  dcterms:title             "Код товарной группы" ;
+  dcterms:description       "Код товарной группы" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_bD2a4o2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M3HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         3 ;
+  rmUserTypes:bookOrder     3 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1" .
+
+# parent : <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ>
+<cpgu:///_HmFCYozVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30004"^^xsd:integer ;
+  dcterms:title             "Код товарной позиции" ;
+  dcterms:description       "Код товарной позиции" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_bs6mAY2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_HmFCYozVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M4HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_HmFCYozVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         4 ;
+  rmUserTypes:bookOrder     4 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-1" .
+
+# parent : <cpgu:///_HmFCYozVEeOiy8owVBW5pQ>
+<cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30005"^^xsd:integer ;
+  dcterms:title             "Код товарной субпозиции" ;
+  dcterms:description       "Код товарной субпозиции" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_crUH8Y2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+  reqs:_M5HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_HmFCYozVEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         5 ;
+  rmUserTypes:bookOrder     5 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-1.0-1" .
+
+# parent : <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ>
+<cpgu:///_RxREAYzVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30006"^^xsd:integer ;
+  dcterms:title             "Код товара" ;
+  dcterms:description       "Код товара" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_RxREAYzVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M6HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_RxREAYzVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         6 ;
+  rmUserTypes:bookOrder     6 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-1.0-1.0-1" .
+
+# parent : <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ>
+<cpgu:///_TSp-QYzVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30007"^^xsd:integer ;
+  dcterms:title             "Наименование товара" ;
+  dcterms:description       "Наименование товара" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_TSp-QYzVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M7HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_TSp-QYzVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_L8Lf8YzVEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         6 ;
+  rmUserTypes:bookOrder     7 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-1.0-1.0-2" .
+
+# parent : <cpgu:///_HmFCYozVEeOiy8owVBW5pQ>
+<cpgu:///_OG314ozVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30008"^^xsd:integer ;
+  dcterms:title             "Наименование товарной субпозиции" ;
+  dcterms:description       "Наименование товарной субпозиции" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_c-KygY2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_OG314ozVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M8HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_OG314ozVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_HmFCYozVEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         5 ;
+  rmUserTypes:bookOrder     8 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-1.0-2" .
+
+# parent : <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ>
+<cpgu:///_Jdny0YzVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30009"^^xsd:integer ;
+  dcterms:title             "Наименование товарной позиции" ;
+  dcterms:description       "Наименование товарной позиции" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_cBl1gY2fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_Jdny0YzVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_M9HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_Jdny0YzVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_3AP4kYzUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         4 ;
+  rmUserTypes:bookOrder     9 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-1.0-2" .
+
+# parent : <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ>
+<cpgu:///_Ep8ocYzVEeOiy8owVBW5pQ>
+  a                         cpgu:Группировка ;
+  dcterms:identifier        "30010"^^xsd:integer ;
+  dcterms:title             "Наименование товарной позиции" ;
+  dcterms:description       "Наименование товарной позиции" ;
+  rm:artifactFormat         rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text ;
+  cpgu:format               "Text" ;
+  cpgu:link                 <cpgu:///_bQ0f442fEeOiy8owVBW5pQ> ;
+  cpgu:status               "created" ;
+  cpgu:uri                  <cpgu:///_Ep8ocYzVEeOiy8owVBW5pQ> ;
+  cpgu:dataType             "0" ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  rm:processArea            projects:gishbbProject ;
+  rm:assetFolder            folders:folder1_1 .
+
+reqs:_N1HusThYEem2Z_XixsC3pQ
+  a                         rmUserTypes:UsedInModule ;
+  rdf:object                <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rdf:subject               <cpgu:///_Ep8ocYzVEeOiy8owVBW5pQ> ;
+  rmUserTypes:parentBinding <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ> ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;  
+  rm:resourceContext        <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml> ;
+  rmUserTypes:depth         3 ;
+  rmUserTypes:bookOrder     10 ;
+  rmUserTypes:sectionNumber "0-1.0-1.0-2" .
+
+#<cpgu:///_dy5UTfgc3hY6GVH>
+#  a                        cpgu:orgunit ;
+#  dcterms:title            "Евразийская Экономическая Комиссия" ;
+#  dcterms:description      "Евразийская Экономическая Комиссия" ;
+#  dcterms:alternative      "ЕЭК" ;
+#  cpgu:status               "created" ;
+#  cpgu:uri              <  "_dy5UTfgc3hY6GVH> ;
+#  cpgu:status              "deleted" ;
+#  oslc_asset:version       "1.0" .

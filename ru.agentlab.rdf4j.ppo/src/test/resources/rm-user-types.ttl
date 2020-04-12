@@ -1,0 +1,165 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix oslc_rm: <http://open-services.net/ns/rm#> .
+@prefix oslc_asset: <http://open-services.net/ns/asset#> .
+
+@prefix rm: <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+#@prefix rmTypes: <http://cpgu.kbpm.ru/ns/rm/types#> .
+@prefix rmUserTypes: <http://cpgu.kbpm.ru/ns/rm/user-types#> .
+
+# in context http://cpgu.kbpm.ru/ns/rm/user-types#
+
+
+#####################################
+# Типы артефактов
+#####################################
+
+
+#####################################
+# Типы атрибутов
+#####################################
+rmUserTypes:primaryText
+  a rdf:Property ;
+  dcterms:title "Primary Text" .
+
+rmUserTypes:primaryTextShape
+  sh:name               "primaryText" ;
+  sh:path               rmUserTypes:primaryText ;
+  sh:maxCount           1 ;
+  sh:datatype           xsd:string .
+
+
+#####################################
+# Форматы
+#####################################
+rmUserTypes:ArtifactFormats
+  a rdf:type .
+
+rmUserTypes:_YwcOsRmREemK5LEaKhoOow
+  a rmUserTypes:ArtifactFormats ;
+  rm:enumEntries [
+    a rdf:Seq ;
+    rdf:_1 rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module ;
+    rdf:_2 rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection ;
+    rdf:_3 rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text
+  ] ;
+  dc:description "" ;
+  dc:title "Форматы артефактов" ;
+  rm:valueType xsd:string .
+
+rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module
+  a rm:enumEntry ;
+  rdf:value "Module"^^xsd:string ;
+  dcterms:title "Модуль" ;
+  dcterms:description "Содержит упорядоченный иерархический список элементов" ;
+  owl:sameAs <http://jazz.net/ns/rm#Module> .
+
+rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection
+  a rm:enumEntry ;
+  rdf:value "Collection"^^xsd:string ;
+  dcterms:title "Набор" ;
+  dcterms:description "Содержит неупорядоченный набор элементов" ;
+  owl:sameAs <http://jazz.net/ns/rm#Collection> .
+
+rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text
+  a rm:enumEntry ;
+  rdf:value "Text"^^xsd:string ;
+  dcterms:title "Текст" ;
+  dcterms:description "Содержит форматированный текст" ;
+  owl:sameAs <http://jazz.net/ns/rm#Text> .
+
+# пока не поддерживаются
+
+#rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Document
+#  a rm:enumEntry ;
+#  rdf:value "Document"^^xsd:string ;
+#  dcterms:title "Документ" ;
+#  dcterms:description "Содержит документ" ;
+#  owl:sameAs <http://jazz.net/ns/rm#Document> .
+
+#rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Name
+#  a rm:enumEntry ;
+#  rdf:value "Name"^^xsd:string ;
+#  dcterms:title "Название" ;
+#  dcterms:description "Содержит название без форматирования" .
+
+#rmUserTypes:_YwcOsRmREemK5LEaKhoOow_File
+#  a rm:enumEntry ;
+#  rdf:value "File"^^xsd:string ;
+#  dcterms:title "Файл" ;
+#  dcterms:description "Содержит документ" .
+
+#####################################
+# Типы связей
+#####################################
+rmUserTypes:UsedInModule
+  a rdfs:Class ;
+  rdfs:subClassOf rmUserTypes:UsedIn ;
+  rm:subjectToObjectLabel "Используется" ;
+  rm:objectToSubjectLabel "Использует" ;
+  dcterms:description "Собирает информацию о связях между требованиями в модуле." ;
+  dcterms:title "Использование в модуле" .
+
+rmUserTypes:parentBinding
+  a                    rdf:Property .
+rmUserTypes:bookOrder
+  a                    rdf:Property .
+rmUserTypes:sectionNumber
+  a                    rdf:Property .
+rmUserTypes:isHeading
+  a                    rdf:Property .
+rmUserTypes:depth
+  a                    rdf:Property .
+
+rmUserTypes:UsedIn
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Используется" ;
+  rm:objectToSubjectLabel "Использует" ;
+  dcterms:description "Собирает информацию о связях между требованиями." ;
+  dcterms:title "Использование" .
+
+rmUserTypes:_YxuBERmREemK5LEaKhoOow
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Уточняется" ;
+  rm:objectToSubjectLabel "Уточнено в" ;
+  dcterms:description "" ;
+  dcterms:title "Уточнение" .
+
+rmUserTypes:_Yy33oRmREemK5LEaKhoOow
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Дочерний объект для" ;
+  rm:objectToSubjectLabel "Родительский объект для" ;
+  dcterms:description "Собирает информацию о связях частей и целого между требованиями. Как правило, эти типы связей используются для представления иерархий требований." ;
+  dcterms:title "Декомпозиция" .
+
+rmUserTypes:_YyfdIRmREemK5LEaKhoOow
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Задано в" ;
+  rm:objectToSubjectLabel "Задает" ;
+  dcterms:description "" ;
+  dcterms:title "Задано в" .
+
+rmUserTypes:_YxkQERmREemK5LEaKhoOow
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Ссылается на" ;
+  rm:objectToSubjectLabel "Задано как ссылка в" ;
+  dcterms:description "Собирает информацию о взаимосвязи между требованиями в разных системах." ;
+  dcterms:title "Ссылается на" .
+
+rmUserTypes:_YxTxYRmREemK5LEaKhoOow
+  a rdfs:Class ;
+  rdfs:subClassOf rm:LinkType ;
+  rm:subjectToObjectLabel "Синоним" ;
+  rm:objectToSubjectLabel "Синоним" ;
+  dcterms:description "Связывает два термина из словаря управления требованиями с одинаковым значением." ;
+  dcterms:title "Синоним" .

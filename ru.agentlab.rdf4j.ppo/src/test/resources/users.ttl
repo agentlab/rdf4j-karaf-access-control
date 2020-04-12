@@ -1,0 +1,84 @@
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms:   <http://purl.org/dc/terms/> .
+@prefix foaf:      <http://xmlns.com/foaf/0.1/> .
+@prefix schema:    <http://schema.org/> .
+
+@prefix users:     <http://cpgu.kbpm.ru/ns/rm/users#> .
+
+# in context http://cpgu.kbpm.ru/ns/rm/users#
+
+users:superuser  a foaf:Person .
+
+users:anonymous  a foaf:Person .
+
+users:amivanoff  a foaf:Person ;
+  schema:affiliation users:mipt ;
+  foaf:name "Alexey Ivanov"@en , "Алексей Иванов"@ru ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:dimonia  a foaf:Person ;
+  schema:affiliation users:mipt ;
+  foaf:name "Dmitrii Shishkin"@en , "Дмитрий Шишкин"@ru ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:doshkalo  a foaf:Person ;
+  schema:affiliation users:mipt ;
+  foaf:name "Dmitrii Oshkalo"@en , "Дмитрий Ошкало"@ru ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:strenin  a foaf:Person ;
+  schema:affiliation users:mipt ;
+  foaf:name "Sergei Trenin"@en , "Сергей Тренин"@ru ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:expertUsers1 a foaf:Group ;
+  dcterms:title "Эксперты 1"@ru ;
+  foaf:member users:amivanoff ;
+  foaf:member users:dimonia ;
+  foaf:member users:doshkalo ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:expertUsers2 a foaf:Group ;
+  dcterms:title "Эксперты 2"@ru ;
+  foaf:member users:amivanoff ;
+  foaf:member users:strenin ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:adminUsers a foaf:Group ;
+  dcterms:title "Администраторы"@ru ;
+	foaf:member users:amivanoff ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:mipt a foaf:Organization ;
+  foaf:name "MIPT"@en , "МФТИ"@ru ;
+  foaf:homepage <https://mipt.ru> ;
+  foaf:member users:amivanoff ;
+  foaf:member users:dimonia ;
+  foaf:member users:doshkalo ;
+  foaf:member users:strenin ;
+  dcterms:creator           users:amivanoff ;
+  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy        users:amivanoff ;
+  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .

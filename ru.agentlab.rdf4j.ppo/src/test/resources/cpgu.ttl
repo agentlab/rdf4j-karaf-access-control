@@ -1,0 +1,766 @@
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix oslc_asset:  <http://open-services.net/ns/asset#> .
+@prefix dc:          <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms:     <http://purl.org/dc/terms/> .
+
+@prefix rm:          <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+@prefix rmUserTypes: <http://cpgu.kbpm.ru/ns/rm/user-types#> .
+
+@prefix cpgu:        <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
+
+
+#####################################
+### Superclass Classes
+#####################################
+
+cpgu:GenericArtifact
+    a rdfs:Class ;
+    rdfs:subClassOf rm:ArtifactType .
+
+cpgu:LawArtifact
+    a rdfs:Class .
+
+cpgu:OSLCAssetArtifact
+    a rdfs:Class .
+
+cpgu:FileLinkArtifact
+    a rdfs:Class .
+
+cpgu:ProcessArtifact
+    a rdfs:Class .
+
+cpgu:MetadataArtifact
+    a rdfs:Class .
+
+cpgu:EmdsystemArtifact
+    a rdfs:Class .
+
+cpgu:TranslatedArtifact
+    a rdfs:Class .
+
+cpgu:WebServiceParameterArtifact
+    a rdfs:Class .
+
+
+#####################################
+### Actual Classes
+### классы в том порядке, что и в спецификации!
+#####################################
+
+# Former portal:portal
+cpgu:Portal
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Портал" ;
+    dcterms:description "Идентифицирует портал и пакет обмена. Содержит дату сборки пакета." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+cpgu:File
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        rm:ArtifactType ;
+    dcterms:title "Файл" ;
+    dcterms:description "Описание в формате HTML. Содержит сериализованный файл, его название и тип. Служит приложением к другим ресурсам, которые на него ссылаются." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+cpgu:Orgunit
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Организационная единица" ;
+    dcterms:description "Организация или ее подразделение. Обычно — орган исполнительной власти (ОИВ): Ростехрегулирование, Управление ЗАГС." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+cpgu:Person
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ;
+    dcterms:title "Сотрудник" ;
+    dcterms:description "Сведения о человеке: имя, должность. Не используется в данный момент." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former classifier:classifier
+cpgu:Classifier
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ;
+    dcterms:title "Классификатор" ;
+    dcterms:description "Классификатор или справочник. Описывает структуру классификатора (не данные из него)." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module ;
+    rm:iconReference <http://www.ibm.com/rdm/images/usecase> .
+
+# Former classifier:Элемент
+cpgu:ClassifierElement
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:TranslatedArtifact ,
+        cpgu:WebServiceParameterArtifact ;
+    dcterms:title "Элемент классификатора" ;
+    dcterms:description "Например, «наименование единицы измерения» в составе ОКЕИ." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former classifier:Группировка
+cpgu:Группировка
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Группа элементов классификатора" ;
+    dcterms:description "Раздел элементов классификатора." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former form:form
+cpgu:Form
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Форма" ;
+    dcterms:description "Входящие и исходящие документы (не НПА) применяемые в услугах: заявления, бланки, анкеты." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former form:Реквизит
+cpgu:FormField
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Реквизит формы" ;
+    dcterms:description "Например, фамилия заявителя." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former form:Группировка, now cpgu:Grouping
+
+# Former ws:ws
+cpgu:WebService
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Веб-служба" ;
+    dcterms:description "Aka сервис (обычно — веб-сервис)." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former ws:Операция
+cpgu:WebServiceOperation
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Операция службы" ;
+    dcterms:description "Запрос к службе." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former ws:Входной_параметр
+cpgu:WebServiceInputParameter
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:TranslatedArtifact ,
+        cpgu:WebServiceParameterArtifact ;
+    dcterms:title "Параметр операции" ;
+    dcterms:description "Параметр запроса." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former ws:Выходной_параметр
+cpgu:WebServiceOutputParameter
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:TranslatedArtifact ,
+        cpgu:WebServiceParameterArtifact ;
+    dcterms:title "Выходной параметр" ;
+    dcterms:description "Часть результата операции." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former ws:Группировка, now cpgu:Grouping
+
+# Former document:document
+cpgu:Document
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Документ" ;
+    dcterms:description "Документ, для которого не проведен или не требуется экспертный разбор." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:law
+cpgu:Law
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Нормативно-правовой акт" ;
+    dcterms:description "НПА, нормативный документ подлежащий анализу." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former law:Цель
+cpgu:LawPurpose
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Цель НПА" ;
+    dcterms:description "Назначение документа, определенное при анализе." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Задача
+cpgu:LawGoal
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Задача НПА" ;
+    dcterms:description "Указание задачи, которую ставит НПА. Выделяется экспертом в содержании НПА." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Функция
+cpgu:LawFunction
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Функция" ;
+    dcterms:description "Заключение эксперта о функции, которая описывается в тексте документа." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Информационный_поток
+cpgu:LawInfoStream
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Информационный поток" ;
+    dcterms:description "Указание экспертом на описываемый в документе информационный поток." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Показатель
+cpgu:LawIndicator
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Показатель" ;
+    dcterms:description "Указание на содержание НПА, классифицированное как показатель: данные в информационном потоке между участниками и т. п." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Участник
+cpgu:LawParty
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Участник" ;
+    dcterms:description "Указание на ответственное лицо, участника информационного взаимодействия и т. п. в содержании НПА." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former law:Структура
+cpgu:LawStructure
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:LawArtifact ;
+    dcterms:title "Структурная единица" ;
+    dcterms:description "Определение элемента в структуре описываемой документом услуги, формы, информационного потока и т. п." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former law:Группировка, now cpgu:Grouping
+
+# Former emdsystem:emdsystem
+cpgu:Emdsystem
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Система моделирования госуслуг" ;
+    dcterms:description "Технический комплекс для разработки услуг и хранения дополнительных сведений о них. Используется для построения ЕМД (единой модели данных). Например, РГУ1" ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former emdsystem:Домен
+cpgu:EmdsystemDomain
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Домен ЕМД" ;
+    dcterms:description "Элементы ЕМД объединённые в логический блок данных, например: технические параметры, организационные элементы и т. п." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former emdsystem:Сущность
+cpgu:EmdsystemEntity
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:EmdsystemArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Сущность ЕМД" ;
+    dcterms:description "Сущность домена ЕМД, например: таблица СУБД, тип требования." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former emdsystem:Значение
+cpgu:EmdsystemValue
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:EmdsystemArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Значение ЕМД" ;
+    dcterms:description "Элемент со значимой характеристикой; например: поле в таблице БД, атрибут требования." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former emdsystem:Служебный
+cpgu:EmdsystemServiceValue
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ,
+        cpgu:EmdsystemArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Служебный элемент ЕМД" ;
+    dcterms:description "Описывает технологическую особенность реализации, например: первичный ключ, индекс, идентификатор." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former emdsystem:Группировка, now cpgu:Grouping
+
+# Former service:service
+cpgu:Service
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Услуга" ;
+    dcterms:description "Aka госуслуга." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former service:Группировка, now cpgu:Grouping
+
+# Former service:Документ
+cpgu:ServiceDocument
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Документ в услуге" ;
+    dcterms:description "Описывает применение группы форм в данной услуге. Например, именно этим ресурсом представлено понятие «Документы, удостоверяющие личность», вложенное в услугу" ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former service:Форма
+cpgu:ServiceForm
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Форма в услуге" ;
+    dcterms:description "Описывает применение формы (form) и ее реквизитов в услуге." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former service:Классификатор
+cpgu:ServiceClassifier
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Классификатор в услуге" ;
+    dcterms:description "Описывает применение классификатора (classifier) в услуге." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former service:Веб-служба
+cpgu:ServiceWebService
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Служба в услуге" ;
+    dcterms:description "Уточняет, как прменяется веб-служба (ws) в услуге." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former task:task
+cpgu:Task
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Задание" ;
+    dcterms:description "Задача по разработке веб-службы (ws) для внедрения услуги (service)." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former task:Элемент
+cpgu:TaskElement
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Элемент задания" ;
+    dcterms:description "Уточняет аспект задания. Например, предоставляет образец данных." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former process:process
+cpgu:Process
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:ProcessArtifact ;
+    dcterms:title "Процесс (BPMN)" ;
+    dcterms:description "Схема процесса (BPMN). [3]" ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+    
+
+# Former process:action
+cpgu:ProcessAction
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:ProcessArtifact ;
+    dcterms:title "Действие" ;
+    dcterms:description "Описывает ход процесса оказания услуги." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former process:data
+cpgu:ProcessData
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:ProcessArtifact ;
+    dcterms:title "Объект схемы" ;
+    dcterms:description "Сущность, участвующая в процессе." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former metadata:metadata
+cpgu:Metadata
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:MetadataArtifact ;
+    dcterms:title "Метаданные" ;
+    dcterms:description "Объекты метаданных, из которых строится иерархия (дерево) для показа на Портале." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former metadata:Объект
+cpgu:MetadataObject
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:MetadataArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Объект метаданных" ;
+    dcterms:description "Представляет объект метаданных. Например, физическое лицо." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former metadata:Свойство
+cpgu:MetadataProperty
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:MetadataArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Свойство (назначение) объекта" ;
+    dcterms:description "Описывает свойство объекта. Обычно — группа данных с общим назначением. Например, свойства место рождения и адрес проживания могут характеризоваться признаками страна, область, район и населённый пункт." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former metadata:Признак
+cpgu:MetadataFeature
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:TranslatedArtifact ;
+    dcterms:title "Признак (значение) свойства" ;
+    dcterms:description "Полная семантика (смысл) объекта определяется сочетанием его cвойства и признака. Пример: место рождения + город." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former metadata:Группировка
+cpgu:MetadataGrouping
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:Группировка ;
+    dcterms:title "Группа элементов метаданных" ;
+    dcterms:description "Раздел элементов метаданных." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Module .
+
+# Former comment:comment
+# пока не поддерживается
+#cpgu:Comment
+#    a rdfs:Class ;
+#    rdfs:subClassOf 
+#        cpgu:GenericArtifact ;
+#    dcterms:title "Комментарий" ;
+#    dcterms:description "Сообщение пользователя портала или эксперта." .
+
+# Former glossary:glossary
+cpgu:Glossary
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Глоссарий" ;
+    dcterms:description "Перечень понятий, относящихся к разработке госуслуг." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+# Former term:term
+cpgu:Term
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Термин" ;
+    dcterms:description "Определение или толкование понятия." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former fc:flowchart
+cpgu:Flowchart
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ;
+    dcterms:title "Схема" ;
+    dcterms:description "Графический методический материал, иллюстрация." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Text .
+
+# Former info:info
+cpgu:Info
+    a rdfs:Class ;
+    rdfs:subClassOf 
+        cpgu:GenericArtifact ,
+        cpgu:OSLCAssetArtifact ,
+        cpgu:FileLinkArtifact ;
+    dcterms:title "Информационный материал" ;
+    dcterms:description "Набор файлов для публикации: страницы, иллюстрации к ним и файлы для скачивания." ;
+    rm:inCreationMenu "true" ;
+    rm:defaultFormat rmUserTypes:_YwcOsRmREemK5LEaKhoOow_Collection .
+
+
+#####################################
+### Properties
+#####################################
+
+cpgu:uri
+    a rdf:Property ;
+    dcterms:title "uri" ;
+    dcterms:description "Задает идентификатор ресурса." .
+
+#cpgu:type
+#    a rdf:Property ;
+#    dcterms:title "type" ;
+#    dcterms:description "Определяет тип ресурса." .
+
+# Former comment:comments
+#cpgu:comments
+#    a rdf:Property ;
+#    dcterms:title "comments" ;
+#    dcterms:description "Вложенные комментарии." .
+
+cpgu:status
+    a rdf:Property ;
+    dcterms:title "Статус" ;
+    dcterms:description "Определяет состояние ресурса в пакете. Позволяет, например, сообщить о том, что ресурс удален из системы." .
+
+cpgu:format
+    a rdf:Property ;
+    dcterms:title "format" ;
+    dcterms:description "Формат заполнения/отображения." .
+
+cpgu:dataType
+    a rdf:Property ;
+    dcterms:title "dataType" ;
+    dcterms:description "Тип данных. Примеры значений: Число, Строка, Дата." .
+
+cpgu:file
+    a rdf:Property ;
+    dcterms:title "file" ;
+    dcterms:description "Ссылка на файл" .
+
+cpgu:link
+    a rdf:Property ;
+    dcterms:title "link" ;
+    dcterms:description "Ссылка на поясняющие элементы из Экспертной системы, например, требование НПА или ссылка на внешний web-сайт." .
+
+cpgu:size
+    a rdf:Property ;
+    dcterms:title "size" ;
+    dcterms:description "Размер" .
+
+cpgu:latin
+    a rdf:Property ;
+    dcterms:title "latin" ;
+    dcterms:description "Название элемента латинскими буквами." .
+
+cpgu:default
+    a rdf:Property ;
+    dcterms:title "default" ;
+    dcterms:description "Значение по умолчанию." .
+
+# Former file:name
+cpgu:fileName
+    a rdf:Property ;
+    dcterms:title "name" ;
+    dcterms:description "Название файла (имя и расширение)." .
+    
+# Formmer file:BASE64
+cpgu:BASE64
+    a rdf:Property ;
+    dcterms:title "BASE64" ;
+    dcterms:description "Содержание файла, закодированное в Base64." .
+
+# Former classifier:code
+cpgu:classifierCode
+    a rdf:Property ;
+    dcterms:title "code" ;
+    dcterms:description "Код классификатора или справочника. Например, ОК 019-95 для ОКАТО. Выгружается порталом." .
+
+# Former classifier:group
+cpgu:classifierGroup
+    a rdf:Property ;
+    dcterms:title "group" ;
+    dcterms:description "Группа классификаторов. Возможные значения: общероссийский, региональный, ведомственный российский, ведомственный федеральный." .
+
+# Former classifier:npa
+cpgu:classifierNpa
+    a rdf:Property ;
+    dcterms:title "npa" ;
+    dcterms:description "НПА (название)." .
+
+# Former classifier_element:xsdType
+cpgu:xsdType
+    a rdf:Property ;
+    dcterms:title "xsdType" ;
+    dcterms:description "Тип элемента в формате XSD." .
+
+cpgu:isNeed
+    a rdf:Property ;
+    dcterms:title "isNeed" ;
+    dcterms:description "Является ли обязательным. Возможные значения: Да и Нет." .
+
+# Former process:xsdType
+cpgu:schema
+    a rdf:Property ;
+    dcterms:title "schema" ;
+    dcterms:description "Архив со схемой. ZIP архив с картинкой, JSON" .
+
+# Former t:implemented
+cpgu:taskImplementedBy
+    a rdf:Property ;
+    dcterms:title "implemented" ;
+    dcterms:description "Ссылка на веб-службу, которая реализует данную задачу" .
+
+# Former form_element:maska
+cpgu:formElementMask
+    a rdf:Property ;
+    dcterms:title "mask" ;
+    dcterms:description "Маска ввода/отображения" .
+
+# Former metadata_object:input
+cpgu:input
+    a rdf:Property ;
+    dcterms:title "input" ;
+    dcterms:description "Ссылка на cpgu:MetadataObject с описанием xsd запроса к веб-службе." .
+
+# Former metadata_object:result
+cpgu:result
+    a rdf:Property ;
+    dcterms:title "result" ;
+    dcterms:description "Ссылка на cpgu:MetadataObject с описанием xsd ответа на запрос." .
+
+# Former form:Private
+cpgu:isPrivate
+    a rdf:Property ;
+    dcterms:title "Private" ;
+    dcterms:description "Является ли документом личного хранения." .
+
+# Former ws:kindof
+cpgu:wsKind
+    a rdf:Property ;
+    dcterms:title "kindof" ;
+    dcterms:description "Возможные значения: логический, физический." .
+
+# Former glossary:term
+cpgu:term
+    a rdf:Property ;
+    rdfs:label "term" ;
+    rdfs:comment "Термин" .
+
+# Former mo:sign
+cpgu:sign
+    a rdf:Property ;
+    rdfs:label "sign" ;
+    rdfs:comment "Дочерний элемент" .
+
+cpgu:affinity
+    a rdf:Property ;
+    rdfs:label "affinity" ;
+    rdfs:comment "Дочерний элемент" .
+
+# Former le:status
+cpgu:lawElementStatus
+    a rdf:Property ;
+    rdfs:label "status" ;
+    rdfs:comment "Статус требования. Возможные значения, Учитывать, Не учитывать" .
+
+# Former ws:status
+cpgu:webServiceStatus
+    a rdf:Property ;
+    rdfs:label "status" ;
+    rdfs:comment "Вид сервиса" .
