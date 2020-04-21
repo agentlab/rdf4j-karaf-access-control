@@ -1,0 +1,23 @@
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sh:      <http://www.w3.org/ns/shacl#>
+PREFIX rm:      <http://cpgu.kbpm.ru/ns/rm/rdf#>
+PREFIX ppo:     <http://vocab.deri.ie/ppo#>
+PREFIX pporoles: <https://agentlab.ru/onto/ppo-roles#>
+SELECT ?eIri0 ?targetClass0 ?title0 ?description0 ?inCreationMenu0 ?defaultIndividNs0 ?defaultFormat0 ?iconReference0
+WHERE {
+  ?eIri0 rdf:type sh:NodeShape;
+    sh:targetClass ?targetClass0.
+  OPTIONAL { ?eIri0 dcterms:title ?title0. }
+  OPTIONAL { ?eIri0 dcterms:description ?description0. }
+  OPTIONAL { ?eIri0 rm:inCreationMenu ?inCreationMenu0. }
+  OPTIONAL { ?eIri0 rm:defaultIndividNs ?defaultIndividNs0. }
+  OPTIONAL { ?eIri0 rm:defaultFormat ?defaultFormat0. }
+  OPTIONAL { ?eIri0 rm:iconReference ?iconReference0. }
+  FILTER(?targetClass0 = rm:Artifact)
+  <dimonia> pporoles:roleAgent ?role.
+  ?role ppoRoles:rolePolicy ?policies.
+  ?policies ppo:hasCondition ?conditions.
+  ?conditions ppo:classAsSubject ?targetClass0.
+  ?policies ppo:hasAccess acl:Read.
+}
