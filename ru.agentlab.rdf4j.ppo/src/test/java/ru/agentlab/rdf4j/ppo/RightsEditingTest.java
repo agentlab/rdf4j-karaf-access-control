@@ -8,8 +8,7 @@ import ru.agentlab.rdf4j.ppo.policies.PPManagerImpl;
 
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RightsEditingTest extends AbstractUnitTests {
 
@@ -20,7 +19,10 @@ public class RightsEditingTest extends AbstractUnitTests {
         IRI adminGroup = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#adminUsers");
 
         PPManagerImpl ppManagerImpl = new PPManagerImpl();
+        long sizeBefore = unfilteredConnection.size();
         ppManagerImpl.setUserAdminGroup(unfilteredConnection, exampleAgent, true);
+        long sizeAfter = unfilteredConnection.size();
+        assertEquals(sizeBefore + 1, sizeAfter);
         Statement expectedAfterAdding = unfilteredConnection.getValueFactory().createStatement(adminGroup, predicateForRole, exampleAgent);
         RepositoryResult<Statement> resultSetAfterAdding = unfilteredConnection.getStatements(adminGroup, predicateForRole, null);
         assertTrue(resultSetAfterAdding.stream().collect(Collectors.toList()).contains(expectedAfterAdding));
@@ -37,7 +39,10 @@ public class RightsEditingTest extends AbstractUnitTests {
         IRI expertGroupOne = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#expertGroup1");
 
         PPManagerImpl ppManagerImpl = new PPManagerImpl();
+        long sizeBefore = unfilteredConnection.size();
         ppManagerImpl.setUserExpertGroupOne(unfilteredConnection, exampleAgent, true);
+        long sizeAfter = unfilteredConnection.size();
+        assertEquals(sizeBefore + 1, sizeAfter);
         Statement expectedAfterAdding = unfilteredConnection.getValueFactory().createStatement(expertGroupOne, predicateForRole, exampleAgent);
         RepositoryResult<Statement> resultSetAfterAdding = unfilteredConnection.getStatements(expertGroupOne, predicateForRole, null);
         assertTrue(resultSetAfterAdding.stream().collect(Collectors.toList()).contains(expectedAfterAdding));
@@ -54,10 +59,14 @@ public class RightsEditingTest extends AbstractUnitTests {
         IRI expertUsersTwo = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#expertUsers2");
 
         PPManagerImpl ppManagerImpl = new PPManagerImpl();
+        long sizeBefore = unfilteredConnection.size();
         ppManagerImpl.setUserExpertUsersTwo(unfilteredConnection, exampleAgent, true);
+        long sizeAfter = unfilteredConnection.size();
+        assertEquals(sizeBefore + 1, sizeAfter);
         Statement expectedAfterAdding = unfilteredConnection.getValueFactory().createStatement(expertUsersTwo, predicateForRole, exampleAgent);
         RepositoryResult<Statement> resultSetAfterAdding = unfilteredConnection.getStatements(expertUsersTwo, predicateForRole, null);
         assertTrue(resultSetAfterAdding.stream().collect(Collectors.toList()).contains(expectedAfterAdding));
+
 
         ppManagerImpl.setUserExpertUsersTwo(unfilteredConnection, exampleAgent, false);
         RepositoryResult<Statement> resultSetAfterRemoving = unfilteredConnection.getStatements(expertUsersTwo, predicateForRole, null);
