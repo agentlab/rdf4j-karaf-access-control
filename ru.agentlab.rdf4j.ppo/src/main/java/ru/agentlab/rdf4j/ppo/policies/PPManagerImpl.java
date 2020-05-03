@@ -85,29 +85,33 @@ public class PPManagerImpl implements PPManager {
         }
     }
 
-    public void setUserExpertGroupOne(RepositoryConnection connection, IRI webid) {
+    public void setUserExpertGroupOne(RepositoryConnection connection, IRI webid, boolean presence) {
         IRI adminIri = connection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#expertGroup1");
-        editUserRole(connection, webid, adminIri);
+        editUserRole(connection, webid, adminIri, presence);
     }
 
-    public void setUserExpertUsersTwo(RepositoryConnection connection, IRI webid) {
+    public void setUserExpertUsersTwo(RepositoryConnection connection, IRI webid, boolean presence) {
         IRI adminIri = connection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#expertUsers2");
-        editUserRole(connection, webid, adminIri);
+        editUserRole(connection, webid, adminIri, presence);
     }
 
-    public void setUserAdminRights(RepositoryConnection connection, IRI webid) {
+    public void setUserAdminGroup(RepositoryConnection connection, IRI webid, boolean presence) {
         IRI adminIri = connection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/users#adminUsers");
-        editUserRole(connection, webid, adminIri);
+        editUserRole(connection, webid, adminIri, presence);
     }
 
-    private void editUserRole(RepositoryConnection connection, IRI webid, IRI userRole) {
+    private void editUserRole(RepositoryConnection connection, IRI webid, IRI userRole, boolean presence) {
         String memberOf = "http://xmlns.com/foaf/0.1/member";
         IRI predicateForRole = connection.getValueFactory().createIRI(memberOf);
         Statement statement = connection.getValueFactory().createStatement(
                 userRole,
                 predicateForRole,
                 webid);
-        connection.add(statement);
+        if (presence) {
+            connection.add(statement);
+        } else {
+            connection.remove(statement);
+        }
         connection.commit();
     }
 
