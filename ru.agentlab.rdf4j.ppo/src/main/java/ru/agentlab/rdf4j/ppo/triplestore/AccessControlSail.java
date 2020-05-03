@@ -9,8 +9,8 @@ import ru.agentlab.rdf4j.ppo.policies.PPManager;
 
 public interface AccessControlSail extends StackableSail {
 
-	SailConnection getConnection(IRI webid) throws SailException;
+    SailConnection getConnection(IRI webid) throws SailException;
 
-	public PPManager getPPManager();
+    PPManager getPPManager();
 
 }

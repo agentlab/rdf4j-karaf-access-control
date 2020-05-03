@@ -28,14 +28,10 @@ public class PPConditionClassAsSubject implements PPConditionSingle {
 		
 		try {
 			handlesAccess = connection.prepareBooleanQuery(QueryLanguage.SPARQL, query).evaluate();
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
+		} catch (QueryEvaluationException | MalformedQueryException | RepositoryException e) {
 			e.printStackTrace();
 		}
-		
+
 		return handlesAccess;
 	}
 

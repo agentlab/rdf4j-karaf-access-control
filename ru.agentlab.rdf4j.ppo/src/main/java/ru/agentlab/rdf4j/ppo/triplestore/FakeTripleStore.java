@@ -45,7 +45,7 @@ public class FakeTripleStore implements TripleStore {
 			this.anonymousIri = unfilteredConnection.getValueFactory().createIRI(anonymous);
 		    log.info("Initialize store with {} triples", unfilteredConnection.size() - unfilteredConnection.size(unfilteredConnection.getValueFactory().createIRI(ppManager.getPoliciesContext())));
 		} catch(RepositoryException e) {
-		    log.error("Error initializy the fake triple store: {}", e.getMessage());
+		    log.error("Error initialize the fake triple store: {}", e.getMessage());
 		}
 	}
 
@@ -107,7 +107,7 @@ public class FakeTripleStore implements TripleStore {
 	public void loadPolicies(String file) {
 		try {
 			loadFile(unfilteredConnection, file, RDFFormat.TURTLE, ppManager.getPoliciesContext());
-			log.info("Load {} ploicies triples", unfilteredConnection.size(unfilteredConnection.getValueFactory().createIRI(ppManager.getPoliciesContext())));
+			log.info("Load {} policies triples", unfilteredConnection.size(unfilteredConnection.getValueFactory().createIRI(ppManager.getPoliciesContext())));
 		} catch (Exception e) {
 			log.error("Error reading policies file: {}", e.getMessage());
 			e.printStackTrace();

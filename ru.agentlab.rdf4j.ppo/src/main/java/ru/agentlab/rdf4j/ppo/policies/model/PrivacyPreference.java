@@ -8,7 +8,7 @@ public interface PrivacyPreference extends Comparable<PrivacyPreference> {
 	 * gets the priority of the PP
 	 * @return the priority
 	 */
-	public float getPriority();
+	float getPriority();
 	/**
 	 * Verifies whether the current PP allows read-access for the submitted
 	 * statement and webid

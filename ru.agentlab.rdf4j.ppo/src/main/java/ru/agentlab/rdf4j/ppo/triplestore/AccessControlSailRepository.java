@@ -9,38 +9,39 @@ import ru.agentlab.rdf4j.ppo.policies.PPManager;
 
 public class AccessControlSailRepository extends SailRepository {
 
-	private PPManager ppManager;
+    private PPManager ppManager;
 
-	public AccessControlSailRepository(AccessControlSail sail) {
-		super(sail);
-		ppManager = sail.getPPManager();
-	}
+    public AccessControlSailRepository(AccessControlSail sail) {
+        super(sail);
+        ppManager = sail.getPPManager();
+    }
 
-	/**
-	 * gets a filtered connection based on the webid
-	 * @param webid an IRI which authenticates the requesting user
-	 * @throws RepositoryException
-	 * @throws SailException
-	 * @return filtered connection based on the webid
-	 */
-	public InterceptingRepositoryConnection getConnection(IRI webid) {
+    /**
+     * gets a filtered connection based on the webid
+     *
+     * @param webid an IRI which authenticates the requesting user
+     * @return filtered connection based on the webid
+     * @throws RepositoryException
+     * @throws SailException
+     */
+    public InterceptingRepositoryConnection getConnection(IRI webid) {
 
-		InterceptingRepositoryConnectionWrapper connection = null;
-		try {
-			 connection = new InterceptingRepositoryConnectionWrapper(this, super.getConnection());
+        InterceptingRepositoryConnectionWrapper connection = null;
+        try {
+            connection = new InterceptingRepositoryConnectionWrapper(this, super.getConnection());
 
-			try {
-				connection.begin();
-				connection.addRepositoryConnectionInterceptor(new TripleFilterInterceptor(webid, ppManager));
-			} finally {
+            try {
+                connection.begin();
+                connection.addRepositoryConnectionInterceptor(new TripleFilterInterceptor(webid, ppManager));
+            } finally {
 
-				connection.commit();
-			}
+                connection.commit();
+            }
 
-    	} catch (RepositoryException e) {
-    		e.printStackTrace();
-    	}
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
 
-		return connection;
-	}
+        return connection;
+    }
 }

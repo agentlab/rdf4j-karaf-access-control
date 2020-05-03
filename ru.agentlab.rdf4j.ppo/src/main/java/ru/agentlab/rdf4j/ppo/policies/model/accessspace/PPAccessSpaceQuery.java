@@ -29,14 +29,10 @@ public class PPAccessSpaceQuery implements PPAccessSpace {
 
 			handlesAccess = connection.prepareBooleanQuery(QueryLanguage.SPARQL, PPManagerImpl.prefixes + tempHasAccessQuery).evaluate();
 
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-		} catch (QueryEvaluationException e) {
+		} catch (RepositoryException | MalformedQueryException | QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return handlesAccess;
 	}
 }
