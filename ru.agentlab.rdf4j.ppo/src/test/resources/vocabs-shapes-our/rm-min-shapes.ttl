@@ -1,0 +1,164 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix oslc:    <http://open-services.net/ns/core#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix vs:      <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+
+@prefix rm:      <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+@prefix nav:     <http://cpgu.kbpm.ru/ns/rm/navigation#> .
+@prefix pporoles: <https://agentlab.ru/onto/ppo-roles#> .
+
+# ******** Artifact Class Shapes ********
+
+rm:ArtifactClassesShape
+  a                     sh:NodeShape ;
+  sh:targetClass        rm:ArtifactClasses ;
+  dcterms:title         "Типы ресурсов"^^xsd:string ;
+  dcterms:description   "Типы ресурсов."^^xsd:string ;
+  sh:property
+    rm:titleShape ,
+    rm:descriptionShape ,
+    rm:inCreationMenuShape .
+
+rm:ArtifactShape
+  a                     sh:NodeShape ;
+  sh:targetClass        rm:Artifact ;
+  dcterms:title         "Требование"^^xsd:string ;
+  dcterms:description   "Тип ресурса"^^xsd:string ;
+  sh:property
+    rm:identifierShape ,
+    rm:titleShape ,
+    rm:descriptionShape ,
+    rm:creatorShape ,
+    rm:createdShape ,
+    rm:modifiedByShape ,
+    rm:modifiedShape .
+
+cpgu:GenericArtifactShape
+  a                       sh:NodeShape ;
+  sh:targetClass          cpgu:GenericArtifact ;
+  dcterms:title           "Generic Artifact" ;
+  dcterms:description     "Generic Artifact" ;
+  sh:property
+    dcterms:abstractShape .
+
+cpgu:FileLinkArtifactShape
+  a                       sh:NodeShape ;
+  sh:targetClass          cpgu:FileLinkArtifact ;
+  dcterms:title           "FileLink Artifact" ;
+  dcterms:description     "FileLink Artifact" ;
+  sh:property
+    cpgu:linkShape .
+
+# ******** Artifact Properties Shapes ********
+
+rm:identifierShape
+  a                     sh:PropertyShape ;
+  sh:name               "Идентификатор"^^xsd:string ;
+  sh:description        "Числовой идентификатор требования, уникальный только в пределах этой системы"^^xsd:string ;
+  sh:path               dcterms:identifier ;
+  sh:order              2 ;
+# who could modify shape data
+  rm:shapeModifiability "system" ;
+# who could modify value data
+  rm:valueModifiability "system" ;
+  #sh:minCount           1 ;
+  sh:maxCount           1 ;
+  sh:datatype           xsd:integer .
+
+rm:titleShape
+  a                     sh:PropertyShape ;
+  sh:name               "Название"^^xsd:string ;
+  sh:description        "Краткое название требования"^^xsd:string ;
+  sh:path               dcterms:title ;
+  sh:order              3 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "user" ;
+  #sh:minCount           1 ;
+  sh:maxCount           1 ;
+  sh:datatype           xsd:string .
+
+rm:descriptionShape
+  a                     sh:PropertyShape ;
+  sh:name               "Описание"^^xsd:string ;
+  sh:description        "Информация о требовании"^^xsd:string ;
+  sh:path               dcterms:description ;
+  sh:order              4 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "user" ;
+  sh:maxCount           1 ;
+  sh:datatype           xsd:string .
+
+rm:creatorShape
+  a                     sh:PropertyShape ;
+  sh:name               "Кем создан"^^xsd:string ;
+  sh:description        "Пользователь, создавший требование"^^xsd:string ;
+  sh:path               dcterms:creator ;
+  sh:order              5 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "system" ;
+  #sh:minCount           1;
+  sh:maxCount           1;
+  sh:class              pporoles:User ;
+  sh:nodeKind           sh:BlankNodeOrIRI .
+
+rm:createdShape
+  a                     sh:PropertyShape ;
+  sh:name               "Когда создан"^^xsd:string ;
+  sh:description        "Когда требование было создано"^^xsd:string ;
+  sh:path               dcterms:created ;
+  sh:order              6 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "system" ;
+  #sh:minCount           1;
+  sh:maxCount           1;
+  sh:datatype           xsd:dateTime .
+
+rm:modifiedByShape
+  a                     sh:PropertyShape ;
+  sh:name               "Кем изменен"^^xsd:string ;
+  sh:description        "Пользователь, изменивший требование"^^xsd:string ;
+  sh:path               dcterms:modifiedBy ;
+  sh:order              7 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "system" ;
+  #sh:minCount           1;
+  sh:maxCount           1;
+  sh:class              pporoles:User ;
+  sh:nodeKind           sh:BlankNodeOrIRI .
+
+rm:modifiedShape
+  a                     sh:PropertyShape ;
+  sh:name               "Когда изменен"^^xsd:string ;
+  sh:description        "Когда требование было изменено"^^xsd:string ;
+  sh:path               dcterms:modified ;
+  sh:order              8 ;
+  rm:shapeModifiability "system" ;
+  rm:valueModifiability "system" ;
+  #sh:minCount           1;
+  sh:maxCount           1;
+  sh:datatype           xsd:dateTime .
+
+
+dcterms:abstractShape
+  a                       sh:PropertyShape ;
+  sh:name                 "abstract" ;
+  sh:path                 dcterms:abstract ;
+  rm:shapeModifiability   "user" ;
+  rm:valueModifiability   "user" ;
+  sh:maxCount             1 ;
+  sh:datatype             xsd:string .
+
+cpgu:linkShape
+  a                       sh:PropertyShape ;
+  sh:name                 "Ссылка" ;
+  sh:description          "Ссылка на поясняющие элементы из Экспертной системы, например, требование НПА или ссылка на внешний web-сайт." ;
+  sh:path                 cpgu:link ;
+  rm:shapeModifiability   "user" ;
+  rm:valueModifiability   "user" ;
+  sh:maxCount             1 ;
+  sh:nodeKind             sh:IRI .

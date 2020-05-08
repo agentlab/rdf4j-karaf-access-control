@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ppo: <http://vocab.deri.ie/ppo#> .
+
+@prefix pporoles: <https://agentlab.ru/onto/ppo-roles#> .
+@prefix rm: <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+
+# ******** SHACL Shapes ********
+
+# ******** Class Shapes ********
+pporoles:UserShape
+  a                       sh:NodeShape ;
+  sh:targetClass          pporoles:User ;
+  sh:property
+    rm:nameShape ,
+    rm:creatorShape ,
+    rm:createdShape ,
+    rm:modifiedByShape ,
+    rm:modifiedShape ;
+  rm:defaultIndividNs     "http://cpgu.kbpm.ru/ns/rm/users#"^^xsd:anyURI .
+
+pporoles:GroupShape
+  a                       sh:NodeShape ;
+  sh:targetClass          pporoles:UserGroup ;
+  sh:property
+    rm:nameShape ,
+    rm:creatorShape ,
+    rm:createdShape ,
+    rm:modifiedByShape ,
+    rm:modifiedShape ,
+    rm:memberShape ;
+  rm:defaultIndividNs     "http://cpgu.kbpm.ru/ns/rm/users#"^^xsd:anyURI .
+
+pporoles:PolicyRoleShape
+  a                       sh:NodeShape ;
+  sh:targetClass          pporoles:PolicyRole ;
+  sh:property
+    rm:titleShape ,
+    rm:descriptionShape ,
+    rm:creatorShape ,
+    rm:createdShape ,
+    rm:modifiedByShape ,
+    rm:modifiedShape ,
+    pporoles:roleAgentShape ,
+    pporoles:rolePolicyShape ;
+  rm:defaultIndividNs     "http://cpgu.kbpm.ru/ns/rm/users#"^^xsd:anyURI .
+
+
+# ******** Property Shapes ********
+
+pporoles:roleAgentShape
+  sh:name             "Агент роли"^^xsd:string ;
+  sh:path             pporoles:roleAgent ;
+  dcterms:description "Назначенный на роль агент."^^xsd:string ;
+  sh:class            pporoles:UserAgent ;
+  sh:nodeKind         sh:BlankNodeOrIRI .
+
+pporoles:rolePolicyShape
+  sh:name             "Политика роли"^^xsd:string ;
+  sh:path             pporoles:rolePolicy ;
+  dcterms:description "Связанная с ролью политика."^^xsd:string ;
+  sh:class            foaf:PrivacyPreference ;
+  sh:nodeKind         sh:BlankNodeOrIRI .
+
+pporoles:memberShape
+  sh:name             "Участник группы" ;
+  sh:path             foaf:member ;
+  sh:class            foaf:UserAgent ;
+  sh:nodeKind         sh:BlankNodeOrIRI .

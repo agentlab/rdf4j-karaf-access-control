@@ -40,12 +40,13 @@ public class FilteringTests {
 		ppManager.setPoliciesContext(policiesContext);
 
 		triplestore = new FakeTripleStore(ppManager, superUser, anonymous);
-		triplestore.loadData("al-rm-vocab.ttl");
-		triplestore.loadData("rm-user-types.ttl");
+		triplestore.loadData("acl.ttl");
+		triplestore.loadData("ppo.ttl");
+		triplestore.loadData("ppo-roles-vocab.ttl");
+		triplestore.loadData("rm-min-vocab.ttl");
 		triplestore.loadData("users.ttl");
-		triplestore.loadData("cpgu.ttl");
-		triplestore.loadData("sample.ttl");
-		triplestore.loadPolicies("access-management.ttl");
+		triplestore.loadData("data-sample.ttl");
+		triplestore.loadPolicies("access-management-settings.ttl");
 		triplestore.init();
 
 		IRI webid = triplestore.getAnonymousIri();
