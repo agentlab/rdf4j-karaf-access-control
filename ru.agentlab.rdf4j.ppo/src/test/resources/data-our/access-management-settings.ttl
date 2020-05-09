@@ -8,6 +8,8 @@
 @prefix users: <http://cpgu.kbpm.ru/ns/rm/users#> .
 @prefix cpgu: <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
 @prefix policies: <http://cpgu.kbpm.ru/ns/rm/policies#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 
 
 cpgu:showVeventLinksAlice a ppo:PrivacyPreference ;

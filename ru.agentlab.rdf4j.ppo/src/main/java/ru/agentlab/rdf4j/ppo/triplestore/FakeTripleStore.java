@@ -1,10 +1,6 @@
 package ru.agentlab.rdf4j.ppo.triplestore;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.rdf4j.model.IRI;
-
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
@@ -15,8 +11,10 @@ import org.eclipse.rdf4j.rio.RDFParseException;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import ru.agentlab.rdf4j.ppo.policies.PPManager;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FakeTripleStore implements TripleStore {
 	private static Logger log = LoggerFactory.getLogger(FakeTripleStore.class);
@@ -59,7 +57,7 @@ public class FakeTripleStore implements TripleStore {
 	}
 
 	public InterceptingRepositoryConnection getConnection(String webid){
-		IRI webidIri = unfilteredConnection.getValueFactory().createIRI(superUser);
+		IRI webidIri = unfilteredConnection.getValueFactory().createIRI(webid);
 		return repository.getConnection(webidIri);
 	}
 
