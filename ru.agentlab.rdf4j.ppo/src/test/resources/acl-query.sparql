@@ -18,9 +18,10 @@ SELECT ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?
   OPTIONAL { ?eIri0 dcterms:created ?created. }
   OPTIONAL { ?eIri0 dcterms:modifiedBy ?modifiedBy. }
   OPTIONAL { ?eIri0 dcterms:modified ?modified. }
-  <users:dimonia> pporoles:roleAgent ?role.
+  ?eIri0 rdf:type ?type.
+  ?role pporoles:roleAgent ?cur_user.
   ?role pporoles:rolePolicy ?policies.
   ?policies ppo:hasCondition ?conditions.
-  ?conditions ppo:classAsSubject <cpgu:Classifier>.
+  ?conditions ?classAsSubjectOrObject ?type.
   ?policies ppo:hasAccess acl:Read.
 }

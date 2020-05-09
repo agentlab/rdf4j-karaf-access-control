@@ -9,32 +9,22 @@ package ru.agentlab.rdf4j.ppo.triplestore;
 
 import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 import org.eclipse.rdf4j.common.iteration.EmptyIteration;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
-
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
-import org.eclipse.rdf4j.query.BindingSet;
-import org.eclipse.rdf4j.query.Dataset;
-import org.eclipse.rdf4j.query.MalformedQueryException;
-import org.eclipse.rdf4j.query.QueryLanguage;
-import org.eclipse.rdf4j.query.Update;
-import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.*;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.event.RepositoryConnectionInterceptor;
 import org.eclipse.rdf4j.repository.event.base.InterceptingRepositoryWrapper;
-import org.eclipse.rdf4j.sail.memory.model.MemResource;
-import org.eclipse.rdf4j.sail.memory.model.MemStatement;
-import org.eclipse.rdf4j.sail.memory.model.MemStatementIterator;
-import org.eclipse.rdf4j.sail.memory.model.MemStatementList;
-import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
+import org.eclipse.rdf4j.sail.memory.model.*;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Wrapper that notifies interceptors of events on RepositoryConnections before
@@ -48,6 +38,20 @@ import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
  */
 public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.repository.base.RepositoryConnectionWrapper
 		implements InterceptingRepositoryConnection {
+
+	private static final String ACL_PREFIXES =
+			"PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+			"PREFIX pporoles:<https://agentlab.ru/onto/ppo-roles#>\n" +
+			"PREFIX ppo:     <http://vocab.deri.ie/ppo#>\n" +
+			"PREFIX acl: <http://www.w3.org/ns/auth/acl#>\n";
+
+	private static final String ACL_ADDITION =
+			"  ?eIri0 rdf:type ?type.\n" +
+			"  ?role pporoles:roleAgent <{USER}>.\n" +
+			"  ?role pporoles:rolePolicy ?policies.\n" +
+			"  ?policies ppo:hasCondition ?conditions.\n" +
+			"  ?conditions ?classAsSubjectOrObject ?type.\n" +
+			"  ?policies ppo:hasAccess {OPERATION}";
 
 	/*-----------*
 	 * Variables *
@@ -286,9 +290,11 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 		if (activated) {
 			return new Update() {
 
+				private String rewritenQuery = addUserRightsParams(update, TripleStoreAction.UPDATE);
+
 				private final RepositoryConnection conn = getDelegate();
 
-				private final Update delegate = conn.prepareUpdate(ql, update, baseURI);
+				private final Update delegate = conn.prepareUpdate(ql, rewritenQuery, baseURI);
 
 				@Override
 				public void execute() throws UpdateExecutionException {
@@ -388,7 +394,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 						while (unfilteredStatements.hasNext()) {
 							Statement st = unfilteredStatements.next();
 
-							if (filterInterceptor.verifyReadStatement(st) == true)	{
+							if (filterInterceptor.verifyReadStatement(st))	{
 								list.add((MemStatement) st);
 							}
 						}
@@ -507,4 +513,22 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 			}
 		}
 	}
+
+	private String addUserRightsParams(String query, TripleStoreAction operation) {
+		String rewritenQuery = "";
+		TripleFilterInterceptor interceptor = (TripleFilterInterceptor) this.interceptors.stream().findAny().orElseThrow(RuntimeException::new);
+		String webId = String.valueOf(interceptor.getWebid());
+		String aclSubQuery = ACL_ADDITION.replace("{USER}", webId);
+		switch (operation) {
+			case READ:
+				aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Read");
+				break;
+			case UPDATE:
+				aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Write");
+				break;
+		}
+		rewritenQuery += ACL_PREFIXES + "\n" + query.substring(0, query.length()-1) + "\n" + aclSubQuery + "\n" + "}";
+		return rewritenQuery;
+	}
+
 }

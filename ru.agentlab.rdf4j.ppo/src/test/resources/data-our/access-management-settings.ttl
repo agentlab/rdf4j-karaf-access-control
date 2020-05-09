@@ -59,7 +59,7 @@ policies:adminRole
   dcterms:modifiedBy      users:amivanoff ;
   pporoles:roleAgent      users:amivanoff ;
   pporoles:roleAgent      users:adminUsers ;
-  pporoles:rolePolicy     policies:fullAccessSuperuser .
+  pporoles:rolePolicy     policies:fullAccessPref .
 
 # Роль ПереводчикКлассификатора с политиками изменения классификатора
 # и чтения любых данных, которая назначена двум агентам с логинами

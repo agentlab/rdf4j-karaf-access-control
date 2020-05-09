@@ -35,6 +35,7 @@ public class FilteringTests {
     protected String policiesContext = "http://cpgu.kbpm.ru/ns/rm/policies";
     protected String superUser = "http://cpgu.kbpm.ru/ns/rm/users#superuser";
     protected String anonymous = "http://cpgu.kbpm.ru/ns/rm/users#anonymous";
+    protected String dimonia = "http://cpgu.kbpm.ru/ns/rm/users#dimonia";
 
     InterceptingRepositoryConnection filteredConnection;
     RepositoryConnection unfilteredConnection;
@@ -72,7 +73,7 @@ public class FilteringTests {
     }
 
     @Test
-    public void anonumousShouldNotHaveAccess() {
+    public void anonymousShouldNotHaveAccess() {
         IRI webid = triplestore.getAnonymousIri();//unfilteredConnection.getValueFactory().createIRI("http://example.org/randomUser");
         IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
         IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
@@ -99,9 +100,9 @@ public class FilteringTests {
         IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
         IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
 
-        String query = String.format("delete where { <%s> <%s> ?anyObject }", subj.toString(), pred.toString());
+        String query = String.format("delete where { <%s> <%s> ?anyObject. }", subj.toString(), pred.toString());
 
-        RepositoryConnection conn = getFilteredConnection(anonymous);
+        InterceptingRepositoryConnection conn = getFilteredConnection(anonymous);
         long beforeSize = conn.size();
         System.out.println(beforeSize);
         Update update = conn.prepareUpdate(SPARQL, query);
@@ -113,64 +114,79 @@ public class FilteringTests {
     }
 
     @Test
+    public void dimoniaShouldHaveUpdateAccess() {
+        IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+
+        String query = String.format("delete where { <%s> <%s> ?anyObject. }", subj.toString(), pred.toString());
+        RepositoryConnection conn = getFilteredConnection(dimonia);
+
+        long beforeSize = conn.size();
+
+        Update update = conn.prepareUpdate(SPARQL, query);
+        update.execute();
+
+        long afterSize = conn.size();
+
+        assertNotEquals(afterSize, beforeSize);
+        conn.close();
+    }
+
+
+    @Test
     public void dimoniaShouldHaveReadAccessWithNoACLQuery() throws IOException {
         File file = new File("src/test/resources/noacl-query.sparql");
 
-        String aclQuery = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        String noAclQuery = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
-        RepositoryConnection conn = getFilteredConnection(anonymous);
-        TupleQueryResult tupleQueryResult = conn.prepareTupleQuery(SPARQL, aclQuery).evaluate();
-//        List<String> bindingSets = tupleQueryResult.getBindingNames();
-//        BindingSet bindingSet;
-//
-//        List<String> result = new ArrayList<>();
-//        while (tupleQueryResult.hasNext()) {
-//            bindingSet = tupleQueryResult.next();
-//            for (String binding : bindingSets) {
-//                Value value = bindingSet.getValue(binding);
-//
-//                if (Objects.nonNull(value)) {
-//                    result.add(String.valueOf(value));
-//                }
-//            }
-//        }
+        RepositoryConnection conn = getFilteredConnection(dimonia);
+        TupleQueryResult tupleQueryResult = conn.prepareTupleQuery(SPARQL, noAclQuery).evaluate();
+
         long size = tupleQueryResult.stream().count();
         assertNotEquals(0, size);
         conn.close();
     }
 
     @Test
-    public void dimoniaShouldNotHaveReadAccessWithACLQuery() throws IOException {
+    public void dimoniaShouldHaveReadAccessWithACLQuery() throws IOException {
         File file = new File("src/test/resources/acl-query.sparql");
 
         String aclQuery = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
-        RepositoryConnection conn = getFilteredConnection(anonymous);
+        InterceptingRepositoryConnection conn = getFilteredConnection(dimonia);
         TupleQueryResult tupleQueryResult = conn.prepareTupleQuery(SPARQL, aclQuery).evaluate();
         long size = tupleQueryResult.stream().count();
-        assertEquals(0, size);
+        assertNotEquals(0, size);
         conn.close();
     }
-
 
     @Test
-    public void superUserShouldHaveUpdateAccess() {
-        IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
-        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+    public void superuserShouldHaveReadAccessWithACLQuery() throws IOException {
+        File file = new File("src/test/resources/acl-query.sparql");
 
-        String query = String.format("delete where { <%s> <%s> ?anyObject }", subj.toString(), pred.toString());
+        String aclQuery = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
-        RepositoryConnection conn = getFilteredConnection(superUser);
-        long beforeSize = conn.size();
-        System.out.println(beforeSize);
-        Update update = conn.prepareUpdate(SPARQL, query);
-        update.execute();
-        long afterSize = conn.size();
-        System.out.println(afterSize);
-        assertNotEquals(afterSize, beforeSize);
+        InterceptingRepositoryConnection conn = getFilteredConnection(superUser);
+        TupleQueryResult tupleQueryResult = conn.prepareTupleQuery(SPARQL, aclQuery).evaluate();
+
+        long size = tupleQueryResult.stream().count();
+        assertNotEquals(0, size);
         conn.close();
     }
 
+    @Test
+    public void anonymousShouldNotHaveReadAccessWithACLQuery() throws IOException {
+        File file = new File("src/test/resources/acl-query.sparql");
+
+        String aclQuery = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+
+        InterceptingRepositoryConnection conn = getFilteredConnection(anonymous);
+        TupleQueryResult tupleQueryResult = conn.prepareTupleQuery(SPARQL, aclQuery).evaluate();
+
+        long size = tupleQueryResult.stream().count();
+        assertNotEquals(0, size);
+        conn.close();
+    }
     /**
      * match unfiltered response with filtered response
      */
@@ -197,11 +213,11 @@ public class FilteringTests {
         Assert.assertEquals("should not return statements", new ArrayList<String>(), actual);
     }
 
-    protected RepositoryConnection getFilteredConnection(IRI webid) throws RepositoryException {
+    protected InterceptingRepositoryConnection getFilteredConnection(IRI webid) throws RepositoryException {
         return triplestore.getConnection(webid);
     }
 
-    protected RepositoryConnection getFilteredConnection(String webid) throws RepositoryException {
+    protected InterceptingRepositoryConnection getFilteredConnection(String webid) throws RepositoryException {
         return triplestore.getConnection(webid);
     }
 }
