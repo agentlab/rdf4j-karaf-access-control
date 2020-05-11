@@ -132,6 +132,16 @@ public class FilteringTests {
         conn.close();
     }
 
+    @Test
+    public void dimoniaShouldHaveReadAccess() {
+        IRI webid = unfilteredConnection.getValueFactory().createIRI(dimonia);
+        IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+        Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
+
+        shouldHaveReadAccess(webid, subj, pred, obj, false);
+    }
+
 
     @Test
     public void dimoniaShouldHaveReadAccessWithNoACLQuery() throws IOException {
