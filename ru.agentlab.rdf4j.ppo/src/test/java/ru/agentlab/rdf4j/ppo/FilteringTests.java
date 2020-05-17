@@ -7,6 +7,7 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.event.InterceptingRepositoryConnection;
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,13 +41,13 @@ public class FilteringTests {
 		ppManager.setPoliciesContext(policiesContext);
 
 		triplestore = new FakeTripleStore(ppManager, superUser, anonymous);
-		triplestore.loadData("acl.ttl");
-		triplestore.loadData("ppo.ttl");
-		triplestore.loadData("ppo-roles-vocab.ttl");
-		triplestore.loadData("rm-min-vocab.ttl");
-		triplestore.loadData("users.ttl");
-		triplestore.loadData("data-sample.ttl");
-		triplestore.loadPolicies("access-management-settings.ttl");
+		triplestore.loadData("vocabs-ext/acl.ttl");
+		triplestore.loadData("vocabs-ext/ppo.ttl");
+		triplestore.loadData("vocabs-shapes-our/ppo-roles-vocab.ttl");
+		triplestore.loadData("vocabs-shapes-our/rm-min-vocab.ttl");
+		triplestore.loadData("data-our/users.ttl");
+		triplestore.loadData("data-our/data-sample.ttl");
+		triplestore.loadPolicies("data-our/access-management-settings.ttl");
 		triplestore.init();
 
 		IRI webid = triplestore.getAnonymousIri();
@@ -77,18 +78,21 @@ public class FilteringTests {
 				.mapToDouble(a -> a)
 				.sum();
 		System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
+		RepositoryResult<Statement> statements = connection.getStatements(subj, pred, obj);
+		System.out.println("Available statements for user = " + statements.stream().count());
 		logMemoryUsage();
 	}
 
 	@Test
-	public void dimoniaQueryAllTriples() {
+	public void dimoniaQueryGroupOfTriples() {
 		InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
+		IRI subj = unfilteredConnection.getValueFactory().createIRI("http://vocab.deri.ie/ppo");
 		List<Long> statistics = new ArrayList<>();
 
 		for (int i = 0; i < 1000; i++) {
 			long start = System.currentTimeMillis();
 			for (int j = 0; j < 1000; j++) {
-				connection.getStatements(null, null, null);
+				connection.getStatements(subj, null, null);
 			}
 			long end = System.currentTimeMillis();
 			statistics.add(end - start);
@@ -98,7 +102,8 @@ public class FilteringTests {
 				.mapToDouble(a -> a)
 				.sum();
 		System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
-		System.out.println("Overall time = " + sumTime);
+		RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);;
+		System.out.println("Available statements for user = " + statements.stream().count());
 		logMemoryUsage();
 	}
 
@@ -110,7 +115,6 @@ public class FilteringTests {
 			if (memoryPoolMXBean.getType() == MemoryType.HEAP)
 			{
 				double peakUsed = memoryPoolMXBean.getPeakUsage().getUsed() / Math.pow(10, 6);
-				System.out.println("Peak used for: " + memoryPoolMXBean.getName() + " is: " + peakUsed + " MB.");
 				total = total + peakUsed;
 			}
 		}

@@ -376,6 +376,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 			throws RepositoryException {
 
 		RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
+		System.out.println("Total statements from repository = " + unfilteredStatements.stream().count());
 
 		if (activated) {
 			for (RepositoryConnectionInterceptor interceptor : interceptors) {
