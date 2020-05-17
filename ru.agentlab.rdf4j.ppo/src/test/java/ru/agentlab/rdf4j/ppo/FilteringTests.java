@@ -1,27 +1,23 @@
 package ru.agentlab.rdf4j.ppo;
 
-import static org.eclipse.rdf4j.query.QueryLanguage.SPARQL;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.rdf4j.common.iteration.Iterations;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
-import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.event.InterceptingRepositoryConnection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import ru.agentlab.rdf4j.ppo.policies.PPManager;
 import ru.agentlab.rdf4j.ppo.policies.PPManagerImpl;
 import ru.agentlab.rdf4j.ppo.triplestore.FakeTripleStore;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilteringTests {
 	protected PPManager ppManager;
@@ -30,6 +26,7 @@ public class FilteringTests {
 	protected String policiesContext = "http://cpgu.kbpm.ru/ns/rm/policies";
 	protected String superUser = "http://cpgu.kbpm.ru/ns/rm/users#superuser";
 	protected String anonymous = "http://cpgu.kbpm.ru/ns/rm/users#anonymous";
+	protected String dimonia = "http://cpgu.kbpm.ru/ns/rm/users#dimonia";
 
 	InterceptingRepositoryConnection filteredConnection;
 	RepositoryConnection unfilteredConnection;
@@ -55,14 +52,28 @@ public class FilteringTests {
 	}
 
 	@Test
+	public void dimoniaShouldHaveReadAccess() {
+		IRI webid = unfilteredConnection.getValueFactory().createIRI(dimonia);
+		IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
+		IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+		Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
+
+		shouldHaveReadAccess(webid, subj, pred, obj, false);
+	}
+
+	@Test
 	public void superUserShouldHaveAccess() {
 		IRI webid = triplestore.getSuperUserIri();//unfilteredConnection.getValueFactory().createIRI("http://example.org/emma");
 		IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
 		IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
 		Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
 
-		shouldHaveReadAccess(webid, subj, pred, obj, false);
-		System.out.println("Huuuu");
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < 1000; i++) {
+			shouldHaveReadAccess(webid, subj, pred, obj, false);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("Time for 1000 queries is = " + (end - start) + " millis.");
 	}
 
 	@Test
