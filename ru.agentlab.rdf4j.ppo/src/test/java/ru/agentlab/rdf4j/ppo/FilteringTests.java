@@ -16,6 +16,9 @@ import ru.agentlab.rdf4j.ppo.policies.PPManagerImpl;
 import ru.agentlab.rdf4j.ppo.triplestore.FakeTripleStore;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,25 +55,74 @@ public class FilteringTests {
 	}
 
 	@Test
-	public void dimoniaShouldHaveReadAccess() {
-		IRI webid = unfilteredConnection.getValueFactory().createIRI(dimonia);
+	public void dimoniaQueryOneTriple() {
+		InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
 		IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
 		IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
 		Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
 
-		shouldHaveReadAccess(webid, subj, pred, obj, false);
+		List<Long> statistics = new ArrayList<>();
+
+		for (int i = 0; i < 1000; i++) {
+			long start = System.currentTimeMillis();
+			for (int j = 0; j < 1000; j++) {
+				connection.getStatements(subj, pred, obj, false);
+			}
+			long end = System.currentTimeMillis();
+			statistics.add(end - start);
+		}
+
+		double sumTime = statistics.stream()
+				.mapToDouble(a -> a)
+				.sum();
+		System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
+		logMemoryUsage();
 	}
 
 	@Test
-	public void superUserShouldHaveAccess() {
-		IRI webid = triplestore.getSuperUserIri();//unfilteredConnection.getValueFactory().createIRI("http://example.org/emma");
-		IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
-		IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
-		Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
+	public void dimoniaQueryAllTriples() {
+		InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
+		List<Long> statistics = new ArrayList<>();
+
+		for (int i = 0; i < 1000; i++) {
+			long start = System.currentTimeMillis();
+			for (int j = 0; j < 1000; j++) {
+				connection.getStatements(null, null, null);
+			}
+			long end = System.currentTimeMillis();
+			statistics.add(end - start);
+		}
+
+		double sumTime = statistics.stream()
+				.mapToDouble(a -> a)
+				.sum();
+		System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
+		System.out.println("Overall time = " + sumTime);
+		logMemoryUsage();
+	}
+
+	private void logMemoryUsage() {
+		List<MemoryPoolMXBean> pools = ManagementFactory.getMemoryPoolMXBeans();
+		double total = 0;
+		for (MemoryPoolMXBean memoryPoolMXBean : pools)
+		{
+			if (memoryPoolMXBean.getType() == MemoryType.HEAP)
+			{
+				double peakUsed = memoryPoolMXBean.getPeakUsage().getUsed() / Math.pow(10, 6);
+				System.out.println("Peak used for: " + memoryPoolMXBean.getName() + " is: " + peakUsed + " MB.");
+				total = total + peakUsed;
+			}
+		}
+		System.out.println("Total heap peak used: " + total + " MB");
+	}
+
+	@Test
+	public void superUserShouldHaveAccessAllTriples() {
+		IRI webid = triplestore.getSuperUserIri();
 
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < 1000; i++) {
-			shouldHaveReadAccess(webid, subj, pred, obj, false);
+			 shouldHaveReadAccess(webid, null, null, null, false);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("Time for 1000 queries is = " + (end - start) + " millis.");
