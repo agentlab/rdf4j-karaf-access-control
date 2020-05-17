@@ -1,0 +1,62 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix oslc:    <http://open-services.net/ns/core#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix vs:      <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix rm:      <http://cpgu.kbpm.ru/ns/rm/rdf#> .
+@prefix users:       <http://cpgu.kbpm.ru/ns/rm/users#> .
+
+@prefix cpgu:        <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
+
+# The Requirements Management ontology
+rm:
+  a owl:Ontology ;
+  dcterms:title "The Requirements Management(RM) Vocabulary Extension" ;
+  dcterms:description "All vocabulary URIs defined in the AL Requirements Management (RM) namespace."^^rdf:XMLLiteral ;
+  vann:preferredNamespacePrefix "al_rm" ;
+  rdfs:label "AL Requirements Management(RM)" .
+
+# ******** Classes of Classes (meta-classes) ********
+
+rm:ArtifactClasses
+  a                   rdfs:Class ;
+  rdfs:subClassOf     rdfs:Class ;
+  rdfs:isDefinedBy    rm: ;
+  dcterms:title       "Типы ресурсов" ;
+  dcterms:description "Типы ресурсов." .
+
+# ******** Classes ********
+
+rm:Artifact
+  a                   rm:ArtifactClasses ;
+  rdfs:isDefinedBy    rm: ;
+  dcterms:title       "Ресурс" ;
+  dcterms:description "Ресурс." .
+
+cpgu:GenericArtifact
+  a rm:ArtifactClasses ;
+  rdfs:subClassOf rm:Artifact .
+
+cpgu:FileLinkArtifact
+  a rm:ArtifactClasses .
+
+cpgu:Classifier
+  a rm:ArtifactClasses ;
+  rdfs:subClassOf 
+    cpgu:GenericArtifact ;
+  dcterms:title           "Классификатор" ;
+  rm:inCreationMenu       "true" ;
+  dcterms:description     "Классификатор или справочник. Описывает структуру классификатора (не данные из него)." .
+
+cpgu:Группировка
+  a rm:ArtifactClasses ;
+  rdfs:subClassOf 
+    cpgu:GenericArtifact ,
+    cpgu:FileLinkArtifact ;
+  dcterms:title           "Группа элементов классификатора" ;
+  rm:inCreationMenu       "true" ;
+  dcterms:description     "Раздел элементов классификатора." .

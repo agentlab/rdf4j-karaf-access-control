@@ -1,0 +1,25 @@
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sh:      <http://www.w3.org/ns/shacl#>
+PREFIX rm:      <http://cpgu.kbpm.ru/ns/rm/rdf#>
+PREFIX cpgu:    <http://cpgu.kbpm.ru/ns/rm/cpgu#>
+PREFIX ppo:     <http://vocab.deri.ie/ppo#>
+PREFIX pporoles:<https://agentlab.ru/onto/ppo-roles#>
+PREFIX users:   <http://cpgu.kbpm.ru/ns/rm/users#>
+
+SELECT ?eIri ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?modified WHERE {
+  ?eIri0 rdf:type cpgu:Classifier;
+  OPTIONAL { ?eIri0 dcterms:identifier ?identifier. }
+  OPTIONAL { ?eIri0 dcterms:title ?title. }
+  OPTIONAL { ?eIri0 dcterms:description ?description. }
+  OPTIONAL { ?eIri0 dcterms:abstract ?abstract. }
+  OPTIONAL { ?eIri0 dcterms:creator ?creator. }
+  OPTIONAL { ?eIri0 dcterms:created ?created. }
+  OPTIONAL { ?eIri0 dcterms:modifiedBy ?modifiedBy. }
+  OPTIONAL { ?eIri0 dcterms:modified ?modified. }
+  <users:dimonia> pporoles:roleAgent ?role.
+  ?role ppoRoles:rolePolicy ?policies.
+  ?policies ppo:hasCondition ?conditions.
+  ?conditions ppo:classAsSubject <cpgu:Classifier>.
+  ?policies ppo:hasAccess acl:Read.
+}
