@@ -1,11 +1,6 @@
 package ru.agentlab.rdf4j.ppo.triplestore;
 
 import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.Literal;
-import org.eclipse.rdf4j.model.Resource;
-import org.eclipse.rdf4j.model.Value;
-
-import java.util.Objects;
 
 public class QueryRewriter {
 
@@ -32,31 +27,13 @@ public class QueryRewriter {
     public String addUserRightsParams(String query, TripleStoreAction operation) {
         String rewritenQuery = "";
         String aclSubQuery = ACL_ADDITION.replace("{USER}", String.valueOf(webId));
-        switch (operation) {
-            case READ:
-                aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Read");
-                break;
-            case UPDATE:
-                aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Write");
-                break;
+        if (operation == TripleStoreAction.READ) {
+            aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Read");
+        } else if (operation == TripleStoreAction.UPDATE) {
+            aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Write");
         }
         rewritenQuery += ACL_PREFIXES + "\n" + query.substring(0, query.length() - 1) + "\n" + aclSubQuery + "\n" + "}";
         return rewritenQuery;
-    }
-
-    public String buildGetQuery(Resource subj, IRI pred, Value obj) {
-        String subjStr = Objects.isNull(subj) ? "?subject" : "<" + subj + ">";
-        String predStr = Objects.isNull(pred) ? "?predicate" : "<" + pred + ">";
-        String objStr = "?object";
-        if (obj instanceof Literal) {
-            objStr = String.valueOf(obj);
-        } else if (obj instanceof IRI) {
-            objStr = "<" + obj + ">";
-        }
-        return "SELECT DISTINCT ?subject ?predicate ?object { ?subject ?predicate ?object " +
-                "FILTER (?subject = " + subjStr + ") " +
-                "FILTER (?predicate = " + predStr + ") " +
-                "FILTER (?object = " + objStr + ")}";
     }
 
 }

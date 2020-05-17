@@ -373,7 +373,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
                                                      Value obj, boolean includeInferred, Resource... contexts)
             throws RepositoryException {
 
-        String query = queryRewriter.buildGetQuery(subj, pred, obj);
+        String query = QueryBuilder.buildGetQuery(subj, pred, obj);
         String queryWithAcl = queryRewriter.addUserRightsParams(query, TripleStoreAction.READ);
         // RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
         TupleQueryResult tupleQueryResult = getDelegate().prepareTupleQuery(queryWithAcl).evaluate();
