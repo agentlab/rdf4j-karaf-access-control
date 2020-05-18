@@ -13,11 +13,7 @@ import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.event.InterceptingRepositoryConnection;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import ru.agentlab.rdf4j.ppo.policies.PPManager;
-import ru.agentlab.rdf4j.ppo.policies.PPManagerImpl;
-import ru.agentlab.rdf4j.ppo.triplestore.FakeTripleStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,39 +27,7 @@ import java.util.List;
 import static org.eclipse.rdf4j.query.QueryLanguage.SPARQL;
 import static org.junit.Assert.*;
 
-public class FilteringTests {
-    protected PPManager ppManager;
-    protected FakeTripleStore triplestore;
-
-    protected String policiesContext = "http://cpgu.kbpm.ru/ns/rm/policies";
-    protected String superUser = "http://cpgu.kbpm.ru/ns/rm/users#superuser";
-    protected String anonymous = "http://cpgu.kbpm.ru/ns/rm/users#anonymous";
-    protected String dimonia = "http://cpgu.kbpm.ru/ns/rm/users#dimonia";
-    protected String amivanoff = "http://cpgu.kbpm.ru/ns/rm/users#amivanoff";
-
-    InterceptingRepositoryConnection filteredConnection;
-    RepositoryConnection unfilteredConnection;
-
-    @Before
-    public void setup() throws IOException {
-        ppManager = new PPManagerImpl();
-        ppManager.setPoliciesContext(policiesContext);
-
-        triplestore = new FakeTripleStore(ppManager, superUser, anonymous);
-        triplestore.loadData("vocabs-ext/acl.ttl");
-        triplestore.loadData("vocabs-ext/ppo.ttl");
-        triplestore.loadData("vocabs-shapes-our/ppo-roles-vocab.ttl");
-        triplestore.loadData("vocabs-shapes-our/rm-min-vocab.ttl");
-        triplestore.loadData("data-our/users.ttl");
-        triplestore.loadData("data-our/data-sample.ttl");
-        triplestore.loadPolicies("data-our/access-management-settings.ttl");
-        triplestore.init();
-
-        IRI webid = triplestore.getAnonymousIri();
-        filteredConnection = triplestore.getConnection(webid);
-
-        unfilteredConnection = triplestore.getUnfilteredConnection();
-    }
+public class FilteringTests extends AbstractUnitTest {
 
     @Test
     public void dimoniaQueryOneTriple() {
@@ -112,7 +76,8 @@ public class FilteringTests {
                 .mapToDouble(a -> a)
                 .sum();
         System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
-        RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);;
+        RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);
+        ;
         System.out.println("Available statements for user = " + statements.stream().count());
         logMemoryUsage();
     }
@@ -120,10 +85,8 @@ public class FilteringTests {
     private void logMemoryUsage() {
         List<MemoryPoolMXBean> pools = ManagementFactory.getMemoryPoolMXBeans();
         double total = 0;
-        for (MemoryPoolMXBean memoryPoolMXBean : pools)
-        {
-            if (memoryPoolMXBean.getType() == MemoryType.HEAP)
-            {
+        for (MemoryPoolMXBean memoryPoolMXBean : pools) {
+            if (memoryPoolMXBean.getType() == MemoryType.HEAP) {
                 double peakUsed = memoryPoolMXBean.getPeakUsage().getUsed() / Math.pow(10, 6);
                 total = total + peakUsed;
             }
@@ -225,9 +188,57 @@ public class FilteringTests {
         long after = unfilteredConnection.size();
 
         assertEquals(before - 1, after);
+        System.out.println("User rights removed!");
 
         RepositoryResult<Statement> statementsAfter = userConnection.getStatements(subj, pred, obj);
         System.out.println("Available statements for user = " + Iterations.asList(statementsAfter).size());
+    }
+
+    @Test
+    public void dimoniaShouldHaveReadAccessToClassifiers() throws Exception {
+        IRI webid = filteredConnection.getValueFactory().createIRI(dimonia);
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+        Value obj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/cpgu#Classifier");
+
+        InterceptingRepositoryConnection userConnection = triplestore.getConnection(webid);
+
+        RepositoryResult<Statement> userConnectionStatements = userConnection.getStatements(null, pred, obj);
+        RepositoryResult<Statement> allAvailableStatements = unfilteredConnection.getStatements(null, pred, obj);
+
+        List<Statement> userListOfStatements = Iterations.asList(userConnectionStatements);
+        List<Statement> allStatements = Iterations.asList(allAvailableStatements);
+
+        System.out.println("Триплы, полученные из репозитория с незащищенным соединением:");
+        userListOfStatements.forEach(System.out::println);
+        System.out.println("Триплы, полученные пользователем dimonia:");
+        allStatements.forEach(System.out::println);
+
+        assertTrue(userListOfStatements.containsAll(allStatements));
+
+    }
+
+    @Test
+    public void dimoniaShouldNotHaveReadAccessToGroups() throws Exception {
+        IRI webid = filteredConnection.getValueFactory().createIRI(dimonia);
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+        Value obj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/cpgu#Группировка");
+
+        InterceptingRepositoryConnection userConnection = triplestore.getConnection(webid);
+
+        RepositoryResult<Statement> userConnectionStatements = userConnection.getStatements(null, pred, obj);
+        RepositoryResult<Statement> allAvailableStatements = unfilteredConnection.getStatements(null, pred, obj);
+
+        List<Statement> userListOfStatements = Iterations.asList(userConnectionStatements);
+        List<Statement> allStatements = Iterations.asList(allAvailableStatements);
+
+        System.out.println("Триплы, полученные из репозитория с незащищенным соединением:");
+        allStatements.forEach(System.out::println);
+        System.out.println("Триплы, полученные пользователем dimonia:");
+        userListOfStatements.forEach(System.out::println);
+
+        assertFalse(allStatements.isEmpty());
+        assertTrue(userListOfStatements.isEmpty());
+
     }
 
 
@@ -285,6 +296,7 @@ public class FilteringTests {
         assertNotEquals(0, size);
         conn.close();
     }
+
     /**
      * match unfiltered response with filtered response
      */
