@@ -8,6 +8,7 @@
 package ru.agentlab.rdf4j.ppo.triplestore;
 
 import org.eclipse.rdf4j.common.iteration.CloseableIteratorIteration;
+import org.eclipse.rdf4j.common.iteration.Iterations;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -376,8 +377,9 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
         String query = QueryBuilder.buildGetQuery(subj, pred, obj);
         String queryWithAcl = queryRewriter.addUserRightsParams(query, TripleStoreAction.READ);
         // RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
-        TupleQueryResult tupleQueryResult = getDelegate().prepareTupleQuery(queryWithAcl).evaluate();
-        List<BindingSet> bindingSets = tupleQueryResult.stream().collect(Collectors.toList());
+        TupleQueryResult tupleQueryResult = getDelegate().prepareTupleQuery(QueryLanguage.SPARQL, queryWithAcl).evaluate();
+        List<BindingSet> bindingSets = Iterations.asList(tupleQueryResult);
+        System.out.println("Total statements from repository = " + bindingSets.size());
         List<Statement> statements = new ArrayList<>();
         for (BindingSet bindings : bindingSets) {
             IRI subject = (IRI) bindings.getBinding("subject").getValue();

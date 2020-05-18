@@ -10,6 +10,7 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.event.InterceptingRepositoryConnection;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.eclipse.rdf4j.query.QueryLanguage.SPARQL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class FilteringTests {
     protected PPManager ppManager;
@@ -39,6 +39,7 @@ public class FilteringTests {
     protected String superUser = "http://cpgu.kbpm.ru/ns/rm/users#superuser";
     protected String anonymous = "http://cpgu.kbpm.ru/ns/rm/users#anonymous";
     protected String dimonia = "http://cpgu.kbpm.ru/ns/rm/users#dimonia";
+    protected String amivanoff = "http://cpgu.kbpm.ru/ns/rm/users#amivanoff";
 
     InterceptingRepositoryConnection filteredConnection;
     RepositoryConnection unfilteredConnection;
@@ -76,7 +77,7 @@ public class FilteringTests {
         for (int i = 0; i < 1000; i++) {
             long start = System.currentTimeMillis();
             for (int j = 0; j < 1000; j++) {
-                connection.getStatements(subj, pred, obj, false);
+                connection.getStatements(subj, pred, obj);
             }
             long end = System.currentTimeMillis();
             statistics.add(end - start);
@@ -86,13 +87,15 @@ public class FilteringTests {
                 .mapToDouble(a -> a)
                 .sum();
         System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
+        RepositoryResult<Statement> statements = connection.getStatements(subj, pred, obj);
+        System.out.println("Available statements for user = " + statements.stream().count());
         logMemoryUsage();
     }
 
     @Test
     public void dimoniaQueryAllTriples() {
         InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
-        IRI subj = unfilteredConnection.getValueFactory().createIRI("http://vocab.deri.ie/ppo");
+        IRI subj = connection.getValueFactory().createIRI("http://vocab.deri.ie/ppo");
 
         List<Long> statistics = new ArrayList<>();
 
@@ -109,7 +112,8 @@ public class FilteringTests {
                 .mapToDouble(a -> a)
                 .sum();
         System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
-        System.out.println("Overall time = " + sumTime);
+        RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);;
+        System.out.println("Available statements for user = " + statements.stream().count());
         logMemoryUsage();
     }
 
@@ -121,7 +125,6 @@ public class FilteringTests {
             if (memoryPoolMXBean.getType() == MemoryType.HEAP)
             {
                 double peakUsed = memoryPoolMXBean.getPeakUsage().getUsed() / Math.pow(10, 6);
-                System.out.println("Peak used for: " + memoryPoolMXBean.getName() + " is: " + peakUsed + " MB.");
                 total = total + peakUsed;
             }
         }
@@ -200,13 +203,31 @@ public class FilteringTests {
     }
 
     @Test
-    public void dimoniaShouldHaveReadAccess() {
-        IRI webid = unfilteredConnection.getValueFactory().createIRI(dimonia);
-        IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
-        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
-        Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
+    public void dimoniaShouldNotHaveReadAccessAfterRemovingRights() throws Exception {
+        IRI webid = filteredConnection.getValueFactory().createIRI(dimonia);
+        IRI subj = filteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
+        IRI pred = filteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+        Value obj = filteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
 
-        shouldHaveReadAccess(webid, subj, pred, obj, false);
+        InterceptingRepositoryConnection userConnection = triplestore.getConnection(webid);
+
+        RepositoryResult<Statement> statementsBefore = userConnection.getStatements(subj, pred, obj);
+        System.out.println("Available statements for user = " + Iterations.asList(statementsBefore).size());
+
+        IRI groupSubj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/policies#classifierTranslatorRole");
+        IRI memberPred = unfilteredConnection.getValueFactory().createIRI("https://agentlab.ru/onto/ppo-roles#roleAgent");
+        Value dimoniaObj = unfilteredConnection.getValueFactory().createIRI(dimonia);
+        Resource context = unfilteredConnection.getValueFactory().createIRI(policiesContext);
+        Statement dimoniaMembership = unfilteredConnection.getValueFactory().createStatement(groupSubj, memberPred, dimoniaObj);
+
+        long before = unfilteredConnection.size();
+        unfilteredConnection.remove(dimoniaMembership, context);
+        long after = unfilteredConnection.size();
+
+        assertEquals(before - 1, after);
+
+        RepositoryResult<Statement> statementsAfter = userConnection.getStatements(subj, pred, obj);
+        System.out.println("Available statements for user = " + Iterations.asList(statementsAfter).size());
     }
 
 
