@@ -72,8 +72,8 @@ policies:classifierTranslatorRole
   dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
   dcterms:modifiedBy      users:amivanoff ;
   pporoles:roleAgent      users:dimonia ;
-  pporoles:rolePolicy     policies:editClassifierPref .
-  #pporoles:rolePolicy     policies:readAllPref .
+  pporoles:rolePolicy     policies:editClassifierPref ;
+  pporoles:rolePolicy     policies:readAllPref .
 
 # Роль Эксперт1, на которую назначены политики изменения классификатора
 # и чтения любых данных. Роль присвоена группе expertGroup1

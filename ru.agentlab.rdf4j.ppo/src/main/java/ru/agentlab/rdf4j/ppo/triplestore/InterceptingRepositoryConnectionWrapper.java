@@ -379,6 +379,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
         // RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
         TupleQueryResult tupleQueryResult = getDelegate().prepareTupleQuery(QueryLanguage.SPARQL, queryWithAcl).evaluate();
         List<BindingSet> bindingSets = Iterations.asList(tupleQueryResult);
+        System.out.println("Statements count: " + bindingSets.size());
         List<Statement> statements = new ArrayList<>();
         for (BindingSet bindings : bindingSets) {
             IRI subject = (IRI) bindings.getBinding("subject").getValue();

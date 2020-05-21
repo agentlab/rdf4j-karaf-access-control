@@ -23,6 +23,7 @@ import java.lang.management.MemoryType;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.eclipse.rdf4j.query.QueryLanguage.SPARQL;
 import static org.junit.Assert.*;
@@ -57,26 +58,31 @@ public class FilteringTests extends AbstractUnitTest {
     }
 
     @Test
-    public void dimoniaQueryAllTriples() {
+    public void dimoniaQuery1000Triples() {
         InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
-        IRI subj = connection.getValueFactory().createIRI("http://vocab.deri.ie/ppo");
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+        IRI obj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/cpgu#Classifier");
+
+        for (int i = 0; i < 1000; i++) {
+            IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///" + UUID.randomUUID().toString() + ".xml");
+            Statement statement = unfilteredConnection.getValueFactory().createStatement(subj, pred, obj);
+            unfilteredConnection.add(statement);
+        }
 
         List<Long> statistics = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
-            long start = System.currentTimeMillis();
-            for (int j = 0; j < 1000; j++) {
-                connection.getStatements(subj, null, null);
-            }
-            long end = System.currentTimeMillis();
-            statistics.add(end - start);
+        long start = System.currentTimeMillis();
+        for (int j = 0; j < 10; j++) {
+            connection.getStatements(null, pred, obj);
         }
+        long end = System.currentTimeMillis();
+        statistics.add(end - start);
 
         double sumTime = statistics.stream()
                 .mapToDouble(a -> a)
                 .sum();
-        System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
-        RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);
+        System.out.println("Time for 1000 queries is = " + (sumTime / 10) + " millis.");
+        RepositoryResult<Statement> statements = connection.getStatements(null, pred, obj);
         ;
         System.out.println("Available statements for user = " + statements.stream().count());
         logMemoryUsage();

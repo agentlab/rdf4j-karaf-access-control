@@ -1,12 +1,12 @@
-@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc:          <http://purl.org/dc/elements/1.1/> .
-@prefix dcterms:     <http://purl.org/dc/terms/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 
-@prefix cpgu:        <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
+@prefix cpgu:    <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
 
-@prefix users:       <http://cpgu.kbpm.ru/ns/rm/users#> .
+@prefix users:   <http://cpgu.kbpm.ru/ns/rm/users#> .
 
 <file:///urn-s2-iisvvt-infosystems-classifier-45950.xml>
   a                         cpgu:Classifier ;
@@ -20,15 +20,15 @@
   dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
 
 <file:///urn-s2-iisvvt-infosystems-classifier-45951.xml>
-  a                         cpgu:Classifier ;
-  dcterms:identifier        "30000"^^xsd:integer ;
-  dcterms:title             "ТН ВЭД ТС" ;
-  dcterms:description       "ТН ВЭД ТС" ;
-  dcterms:abstract          "Товарная номенклатура внешнеэкономической деятельности таможенного союза" ;
-  dcterms:creator           users:amivanoff ;
-  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
-  dcterms:modifiedBy        users:amivanoff ;
-  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+  a                   cpgu:Classifier ;
+  dcterms:identifier  "30000"^^xsd:integer ;
+  dcterms:title       "ТН ВЭД ТС" ;
+  dcterms:description "ТН ВЭД ТС" ;
+  dcterms:abstract    "Товарная номенклатура внешнеэкономической деятельности таможенного союза" ;
+  dcterms:creator     users:amivanoff ;
+  dcterms:created     "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+  dcterms:modifiedBy  users:amivanoff ;
+  dcterms:modified    "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
 
 <file:///urn-s2-iisvvt-infosystems-classifier-45952.xml>
   a                         cpgu:Classifier ;
@@ -42,23 +42,23 @@
   dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
 
 <cpgu:///_tHAikozUEeOiy8owVBW5pQ>
-  a                         cpgu:Группировка ;
-  dcterms:identifier        "30001"^^xsd:integer ;
-  dcterms:title             "ТН ВЭД ТС" ;
-  dcterms:description       "ТН ВЭД ТС" ;
-  cpgu:link                 <file:///meta_aVECQo2fEeOiy8owVBW5pQ.xml> ;
-  dcterms:creator           users:amivanoff ;
-  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
-  dcterms:modifiedBy        users:amivanoff ;
-  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+    a                   cpgu:Группировка ;
+    dcterms:identifier  "30001"^^xsd:integer ;
+    dcterms:title       "ТН ВЭД ТС" ;
+    dcterms:description "ТН ВЭД ТС" ;
+    cpgu:link           <file:///meta_aVECQo2fEeOiy8owVBW5pQ.xml> ;
+    dcterms:creator     users:amivanoff ;
+    dcterms:created     "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+    dcterms:modifiedBy  users:amivanoff ;
+    dcterms:modified    "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
 
 <cpgu:///_zYXy8ozUEeOiy8owVBW5pQ>
-  a                         cpgu:Группировка ;
-  dcterms:identifier        "30002"^^xsd:integer ;
-  dcterms:title             "Наименование раздела" ;
-  dcterms:description       "Наименование раздела" ;
-  cpgu:link                 <cpgu:///_alBJ0o2fEeOiy8owVBW5pQ> ;
-  dcterms:creator           users:amivanoff ;
-  dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
-  dcterms:modifiedBy        users:amivanoff ;
-  dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+    a                   cpgu:Группировка ;
+    dcterms:identifier  "30002"^^xsd:integer ;
+    dcterms:title       "Наименование раздела" ;
+    dcterms:description "Наименование раздела" ;
+    cpgu:link           <cpgu:///_alBJ0o2fEeOiy8owVBW5pQ> ;
+    dcterms:creator     users:amivanoff ;
+    dcterms:created     "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+    dcterms:modifiedBy  users:amivanoff ;
+    dcterms:modified    "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
