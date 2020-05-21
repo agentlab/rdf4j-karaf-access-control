@@ -22,6 +22,7 @@ import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class FilteringTests {
 	protected PPManager ppManager;
@@ -86,23 +87,31 @@ public class FilteringTests {
 	@Test
 	public void dimoniaQueryGroupOfTriples() {
 		InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
-		IRI subj = unfilteredConnection.getValueFactory().createIRI("http://vocab.deri.ie/ppo");
-		List<Long> statistics = new ArrayList<>();
+		IRI pred = unfilteredConnection.getValueFactory().createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+		IRI obj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/cpgu#Classifier");
+
 
 		for (int i = 0; i < 1000; i++) {
-			long start = System.currentTimeMillis();
-			for (int j = 0; j < 1000; j++) {
-				connection.getStatements(subj, null, null);
-			}
-			long end = System.currentTimeMillis();
-			statistics.add(end - start);
+			IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///" + UUID.randomUUID().toString() + ".xml");
+			Statement statement = unfilteredConnection.getValueFactory().createStatement(subj, pred, obj);
+			unfilteredConnection.add(statement);
 		}
+
+		List<Long> statistics = new ArrayList<>();
+
+		long start = System.currentTimeMillis();
+		for (int j = 0; j < 10; j++) {
+			connection.getStatements(null, pred, null);
+		}
+		long end = System.currentTimeMillis();
+		statistics.add(end - start);
 
 		double sumTime = statistics.stream()
 				.mapToDouble(a -> a)
 				.sum();
-		System.out.println("Time for 1000 queries is = " + (sumTime / 1000) + " millis.");
-		RepositoryResult<Statement> statements = connection.getStatements(subj, null, null);;
+		System.out.println("Time for 1 query is = " + (sumTime / 10) + " millis.");
+		RepositoryResult<Statement> statements = connection.getStatements(null, pred, obj);
+		;
 		System.out.println("Available statements for user = " + statements.stream().count());
 		logMemoryUsage();
 	}

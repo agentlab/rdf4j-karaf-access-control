@@ -11,9 +11,11 @@ import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 import org.eclipse.rdf4j.common.iteration.EmptyIteration;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.eclipse.rdf4j.common.iteration.Iterations;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -376,7 +378,8 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 			throws RepositoryException {
 
 		RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
-		System.out.println("Total statements from repository = " + unfilteredStatements.stream().count());
+		List<Statement> unfilteredStatementsList = Iterations.asList(unfilteredStatements);
+		System.out.println("Total statements from repository = " + unfilteredStatementsList.size());
 
 		if (activated) {
 			for (RepositoryConnectionInterceptor interceptor : interceptors) {
@@ -386,9 +389,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
 					MemStatementList list = new MemStatementList();
 
 					try {
-						while (unfilteredStatements.hasNext()) {
-							Statement st = unfilteredStatements.next();
-
+						for (Statement st : unfilteredStatementsList) {
 							if (filterInterceptor.verifyReadStatement(st) == true)	{
 								list.add((MemStatement) st);
 							}

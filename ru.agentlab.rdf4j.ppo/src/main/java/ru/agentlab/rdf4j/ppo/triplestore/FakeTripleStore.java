@@ -59,7 +59,7 @@ public class FakeTripleStore implements TripleStore {
 	}
 
 	public InterceptingRepositoryConnection getConnection(String webid){
-		IRI webidIri = unfilteredConnection.getValueFactory().createIRI(superUser);
+		IRI webidIri = unfilteredConnection.getValueFactory().createIRI(webid);
 		return repository.getConnection(webidIri);
 	}
 
