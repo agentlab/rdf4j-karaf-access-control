@@ -58,10 +58,11 @@ public class FilteringTests extends AbstractUnitTest {
     }
 
     @Test
-    public void dimoniaQuery1000Triples() {
+    public void dimoniaQueryGroupOfTriples() {
         InterceptingRepositoryConnection connection = triplestore.getConnection(dimonia);
         IRI pred = unfilteredConnection.getValueFactory().createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
         IRI obj = unfilteredConnection.getValueFactory().createIRI("http://cpgu.kbpm.ru/ns/rm/cpgu#Classifier");
+
 
         for (int i = 0; i < 1000; i++) {
             IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///" + UUID.randomUUID().toString() + ".xml");
@@ -72,8 +73,8 @@ public class FilteringTests extends AbstractUnitTest {
         List<Long> statistics = new ArrayList<>();
 
         long start = System.currentTimeMillis();
-        for (int j = 0; j < 10; j++) {
-            connection.getStatements(null, pred, obj);
+        for (int j = 0; j < 1; j++) {
+            connection.getStatements(null, pred, null);
         }
         long end = System.currentTimeMillis();
         statistics.add(end - start);
@@ -81,9 +82,8 @@ public class FilteringTests extends AbstractUnitTest {
         double sumTime = statistics.stream()
                 .mapToDouble(a -> a)
                 .sum();
-        System.out.println("Time for 1000 queries is = " + (sumTime / 10) + " millis.");
-        RepositoryResult<Statement> statements = connection.getStatements(null, pred, obj);
-        ;
+        System.out.println("Time for 1 query is = " + (sumTime / 1) + " millis.");
+        RepositoryResult<Statement> statements = connection.getStatements(null, pred, null);
         System.out.println("Available statements for user = " + statements.stream().count());
         logMemoryUsage();
     }

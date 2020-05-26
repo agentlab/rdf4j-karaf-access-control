@@ -15,7 +15,7 @@ public class QueryRewriter {
                     "  ?role pporoles:roleAgent <{USER}>.\n" +
                     "  ?role pporoles:rolePolicy ?policies.\n" +
                     "  ?policies ppo:hasCondition ?conditions.\n" +
-                    "  ?conditions ?classAsSubjectOrObject ?type.\n" +
+                    "  ?conditions ppo:classAsSubject ?type.\n" +
                     "  ?policies ppo:hasAccess {OPERATION}";
 
     private IRI webId;
