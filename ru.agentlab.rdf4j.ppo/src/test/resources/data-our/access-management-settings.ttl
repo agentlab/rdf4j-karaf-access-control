@@ -8,6 +8,8 @@
 @prefix users: <http://cpgu.kbpm.ru/ns/rm/users#> .
 @prefix cpgu: <http://cpgu.kbpm.ru/ns/rm/cpgu#> .
 @prefix policies: <http://cpgu.kbpm.ru/ns/rm/policies#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 
 
 cpgu:showVeventLinksAlice a ppo:PrivacyPreference ;
@@ -57,7 +59,7 @@ policies:adminRole
   dcterms:modifiedBy      users:amivanoff ;
   pporoles:roleAgent      users:amivanoff ;
   pporoles:roleAgent      users:adminUsers ;
-  pporoles:rolePolicy     policies:fullAccessSuperuser .
+  pporoles:rolePolicy     policies:fullAccessPref .
 
 # Роль ПереводчикКлассификатора с политиками изменения классификатора
 # и чтения любых данных, которая назначена двум агентам с логинами
@@ -70,8 +72,8 @@ policies:classifierTranslatorRole
   dcterms:modified        "2019-08-09T13:21:08.720Z"^^xsd:dateTime ;
   dcterms:modifiedBy      users:amivanoff ;
   pporoles:roleAgent      users:dimonia ;
-  pporoles:rolePolicy     policies:editClassifierPref ;
-  pporoles:rolePolicy     policies:readAllPref .
+  pporoles:rolePolicy     policies:editClassifierPref .
+  #pporoles:rolePolicy     policies:readAllPref .
 
 # Роль Эксперт1, на которую назначены политики изменения классификатора
 # и чтения любых данных. Роль присвоена группе expertGroup1
@@ -123,12 +125,12 @@ policies:hideAddDataFromAnon a ppo:PrivacyPreference ;
 policies:editClassifierPref a ppo:PrivacyPreference ;
   ppo:hasCondition [
     ppo:classAsSubject cpgu:Группировка ;
-    ppo:classAsSubject cpgu:Classifier ;
+    #ppo:classAsSubject cpgu:Classifier ;
   ] ;
   ppo:hasAccessSpace [
     ppo:hasAccessQuery "ASK { policies:classifierTranslatorRole pporoles:roleAgent ?cur_user }"
   ] ;
-  ppo:hasAccess acl:Write .
+  ppo:hasAccess acl:Read .
 
 # Агенту с ролью translatorRole разрешено изменение и добавление триплов,
 # в которых субъект -- это объект классов из перечня
@@ -155,6 +157,9 @@ policies:readAllPref a ppo:PrivacyPreference ;
     ppo:hasAccessQuery "ASK { policies:translatorRole pporoles:roleAgent ?cur_user }"
   ] ;
   ppo:hasAccess acl:Read .
+
+
+
 
 # Pure WebAC variant
 # Alexey Ivanov can read and edit all the classifiers and groupings

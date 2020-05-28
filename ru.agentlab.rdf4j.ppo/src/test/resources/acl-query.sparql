@@ -6,8 +6,9 @@ PREFIX cpgu:    <http://cpgu.kbpm.ru/ns/rm/cpgu#>
 PREFIX ppo:     <http://vocab.deri.ie/ppo#>
 PREFIX pporoles:<https://agentlab.ru/onto/ppo-roles#>
 PREFIX users:   <http://cpgu.kbpm.ru/ns/rm/users#>
+PREFIX acl: <http://www.w3.org/ns/auth/acl#>
 
-SELECT ?eIri ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?modified WHERE {
+SELECT ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?modified WHERE {
   ?eIri0 rdf:type cpgu:Classifier;
   OPTIONAL { ?eIri0 dcterms:identifier ?identifier. }
   OPTIONAL { ?eIri0 dcterms:title ?title. }
@@ -17,9 +18,10 @@ SELECT ?eIri ?identifier ?title ?description ?abstract ?creator ?created ?modifi
   OPTIONAL { ?eIri0 dcterms:created ?created. }
   OPTIONAL { ?eIri0 dcterms:modifiedBy ?modifiedBy. }
   OPTIONAL { ?eIri0 dcterms:modified ?modified. }
-  <users:dimonia> pporoles:roleAgent ?role.
-  ?role ppoRoles:rolePolicy ?policies.
+  ?eIri0 rdf:type ?type.
+  ?role pporoles:roleAgent ?cur_user.
+  ?role pporoles:rolePolicy ?policies.
   ?policies ppo:hasCondition ?conditions.
-  ?conditions ppo:classAsSubject <cpgu:Classifier>.
+  ?conditions ?classAsSubjectOrObject ?type.
   ?policies ppo:hasAccess acl:Read.
 }

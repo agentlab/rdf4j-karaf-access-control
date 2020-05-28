@@ -1,14 +1,13 @@
 package ru.agentlab.rdf4j.ppo.triplestore;
 
-import java.util.List;
-
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.event.base.RepositoryConnectionInterceptorAdapter;
-
 import ru.agentlab.rdf4j.ppo.policies.PPManager;
 import ru.agentlab.rdf4j.ppo.policies.model.PPAccessAllowed;
 import ru.agentlab.rdf4j.ppo.policies.model.PrivacyPreference;
+
+import java.util.List;
 
 public class TripleFilterInterceptor extends RepositoryConnectionInterceptorAdapter {
 
@@ -55,14 +54,11 @@ public class TripleFilterInterceptor extends RepositoryConnectionInterceptorAdap
 	public boolean verifyUpdateStatement(Statement reference, Statement st) {
 		boolean refMayUpdate = verifyStatement(reference, TripleStoreAction.UPDATE);
 
-		if(refMayUpdate && reference.getSubject().equals(st.getSubject()) &&
-				reference.getPredicate().equals(st.getPredicate()))
-			if(reference.getContext() == null & st.getContext() == null || reference.getContext().equals(st.getContext()))
-				return true;
-			else
-				return false;
-		else
+		if (refMayUpdate && reference.getSubject().equals(st.getSubject()) && reference.getPredicate().equals(st.getPredicate())) {
+			return reference.getContext() == null && st.getContext() == null || reference.getContext().equals(st.getContext());
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -104,5 +100,9 @@ public class TripleFilterInterceptor extends RepositoryConnectionInterceptorAdap
 			}
 		}
 		return !ppManager.isWhitelisting();
+	}
+
+	public IRI getWebid() {
+		return webid;
 	}
 }

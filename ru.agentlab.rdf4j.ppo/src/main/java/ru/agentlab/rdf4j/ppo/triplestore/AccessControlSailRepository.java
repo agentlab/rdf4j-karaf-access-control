@@ -4,7 +4,6 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.SailException;
-
 import ru.agentlab.rdf4j.ppo.policies.PPManager;
 
 public class AccessControlSailRepository extends SailRepository {
@@ -31,6 +30,7 @@ public class AccessControlSailRepository extends SailRepository {
 
 			try {
 				connection.begin();
+				connection.setQueryRewriter(new QueryRewriter(webid));
 				connection.addRepositoryConnectionInterceptor(new TripleFilterInterceptor(webid, ppManager));
 			} finally {
 

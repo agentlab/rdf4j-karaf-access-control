@@ -41,6 +41,22 @@ users:strenin  a pporoles:User ;
   dcterms:modifiedBy        users:amivanoff ;
   dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
 
+users:anonymous  a pporoles:User ;
+               schema:affiliation        users:mipt ;
+               foaf:name                 "Аноним" ;
+               dcterms:creator           users:amivanoff ;
+               dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+               dcterms:modifiedBy        users:amivanoff ;
+               dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
+users:superuser  a pporoles:User ;
+               schema:affiliation        users:mipt ;
+               foaf:name                 "Суперпользователь" ;
+               dcterms:creator           users:amivanoff ;
+               dcterms:created           "2014-02-10T10:12:16.000Z"^^xsd:dateTime ;
+               dcterms:modifiedBy        users:amivanoff ;
+               dcterms:modified          "2014-02-10T10:12:16.000Z"^^xsd:dateTime .
+
 users:expertGroup1 a pporoles:UserGroup ;
   foaf:name                 "Эксперты 1" ;
   foaf:member               users:amivanoff ;

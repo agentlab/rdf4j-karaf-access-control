@@ -4,7 +4,7 @@ PREFIX sh:      <http://www.w3.org/ns/shacl#>
 PREFIX rm:      <http://cpgu.kbpm.ru/ns/rm/rdf#>
 PREFIX cpgu:    <http://cpgu.kbpm.ru/ns/rm/cpgu#>
 
-SELECT ?eIri ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?modified WHERE {
+SELECT ?identifier ?title ?description ?abstract ?creator ?created ?modifiedBy ?modified WHERE {
   ?eIri0 rdf:type cpgu:Classifier;
   OPTIONAL { ?eIri0 dcterms:identifier ?identifier. }
   OPTIONAL { ?eIri0 dcterms:title ?title. }
