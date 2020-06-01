@@ -26,7 +26,7 @@ public class QueryRewriterTest extends AbstractUnitTest {
         Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
 
         String buildedQuery = QueryBuilder.buildGetQuery(subj, pred, obj);
-        String rewritenQuery = queryRewriter.addUserRightsParams(buildedQuery, TripleStoreAction.READ);
+        String rewritenQuery = queryRewriter.addUserRightsParamsRead(buildedQuery);
         System.out.println(rewritenQuery);
         TupleQueryResult tupleQueryResult = unfilteredConnection.prepareTupleQuery(QueryLanguage.SPARQL, buildedQuery).evaluate();
         List<BindingSet> bindingSets = Iterations.asList(tupleQueryResult);
@@ -35,6 +35,22 @@ public class QueryRewriterTest extends AbstractUnitTest {
         for (BindingSet bindings : bindingSets) {
             System.out.println(bindings);
         }
+    }
+
+    @Test
+    public void shouldRewriteDeleteQuery() {
+        IRI webid = unfilteredConnection.getValueFactory().createIRI(dimonia);
+        QueryRewriter queryRewriter = new QueryRewriter(webid);
+        IRI subj = unfilteredConnection.getValueFactory().createIRI("file:///urn-s2-iisvvt-infosystems-classifier-45950.xml");
+        IRI pred = unfilteredConnection.getValueFactory().createIRI("http://purl.org/dc/terms/title");
+        Value obj = unfilteredConnection.getValueFactory().createLiteral("ТН ВЭД ТС");
+
+        String buildedQuery = QueryBuilder.buildDeleteQuery(subj, pred, obj);
+        String rewritenQuery = queryRewriter.addUserRightsParamsDelete(buildedQuery);
+        System.out.println(rewritenQuery);
+        System.out.println("Statements before: " + unfilteredConnection.size());
+        unfilteredConnection.prepareUpdate(QueryLanguage.SPARQL, rewritenQuery).execute();
+        System.out.println("Statements after: " + unfilteredConnection.size());
     }
 
 }

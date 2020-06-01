@@ -283,7 +283,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
         if (activated) {
             return new Update() {
 
-                private String rewritenQuery = queryRewriter.addUserRightsParams(update, TripleStoreAction.UPDATE);
+                private String rewritenQuery = queryRewriter.addUserRightsParamsUpdate(update);
 
                 private final RepositoryConnection conn = getDelegate();
 
@@ -375,7 +375,7 @@ public class InterceptingRepositoryConnectionWrapper extends org.eclipse.rdf4j.r
             throws RepositoryException {
 
         String query = QueryBuilder.buildGetQuery(subj, pred, obj);
-        String queryWithAcl = queryRewriter.addUserRightsParams(query, TripleStoreAction.READ);
+        String queryWithAcl = queryRewriter.addUserRightsParamsRead(query);
         // RepositoryResult<Statement> unfilteredStatements = getDelegate().getStatements(subj, pred, obj, includeInferred, contexts);
         TupleQueryResult tupleQueryResult = getDelegate().prepareTupleQuery(QueryLanguage.SPARQL, queryWithAcl).evaluate();
         List<BindingSet> bindingSets = Iterations.asList(tupleQueryResult);

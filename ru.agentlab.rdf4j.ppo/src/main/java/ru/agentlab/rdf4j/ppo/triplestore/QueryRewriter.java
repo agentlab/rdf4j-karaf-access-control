@@ -24,15 +24,30 @@ public class QueryRewriter {
         this.webId = webId;
     }
 
-    public String addUserRightsParams(String query, TripleStoreAction operation) {
+    public String addUserRightsParamsRead(String query) {
         String rewritenQuery = "";
         String aclSubQuery = ACL_ADDITION.replace("{USER}", String.valueOf(webId));
-        if (operation == TripleStoreAction.READ) {
-            aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Read");
-        } else if (operation == TripleStoreAction.UPDATE) {
-            aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Write");
-        }
+        aclSubQuery = aclSubQuery.replace("{OPERATION}", "acl:Read");
+
         rewritenQuery += ACL_PREFIXES + "\n" + query.substring(0, query.length() - 1) + "\n" + aclSubQuery + "\n" + "}";
+        return rewritenQuery;
+    }
+
+    public String addUserRightsParamsDelete(String query) {
+        String rewritenQuery = "";
+        String aclSubQuery = ACL_ADDITION.replace("{USER}", String.valueOf(webId));
+        aclSubQuery = aclSubQuery.replace("{OPERATION}", "ppo:Delete");
+
+        rewritenQuery += ACL_PREFIXES + "\n" + query + "\n" + "WHERE {" + aclSubQuery + "\n" + "}";
+        return rewritenQuery;
+    }
+
+    public String addUserRightsParamsUpdate(String query) {
+        String rewritenQuery = "";
+        String aclSubQuery = ACL_ADDITION.replace("{USER}", String.valueOf(webId));
+        aclSubQuery = aclSubQuery.replace("{OPERATION}", "ppo:Update");
+
+        rewritenQuery += ACL_PREFIXES + "\n" + query + "\n" + "WHERE {" + aclSubQuery + "\n" + "}";
         return rewritenQuery;
     }
 

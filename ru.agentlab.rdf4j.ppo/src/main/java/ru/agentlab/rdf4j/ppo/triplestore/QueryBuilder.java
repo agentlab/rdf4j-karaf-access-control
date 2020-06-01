@@ -27,4 +27,16 @@ public class QueryBuilder {
                 "FILTER (?object = " + objStr + ")}";
     }
 
+    public static String buildDeleteQuery(Resource subj, IRI pred, Value obj) {
+        String subjStr = Objects.isNull(subj) ? "?subject" : "<" + subj + ">";
+        String predStr = Objects.isNull(pred) ? "?predicate" : "<" + pred + ">";
+        String objStr = "?object";
+        if (obj instanceof Literal) {
+            objStr = String.valueOf(obj);
+        } else if (obj instanceof IRI) {
+            objStr = "<" + obj + ">";
+        }
+        return "DELETE { " + subjStr + " " + predStr + " " + objStr + "}";
+    }
+
 }
